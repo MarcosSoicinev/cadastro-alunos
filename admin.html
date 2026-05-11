@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — Cadastro de Alunos</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#666;--bd:#e0e0e0;--bg:#f0f0ee;--cd:#fff;--r:14px;--red:#c0392b;--redl:#fdf0ef}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:2rem 1rem 3rem}
+.wrap{max-width:860px;margin:0 auto}
+
+/* LOGIN */
+#loginView{max-width:380px;margin:6rem auto;text-align:center}
+.logo{width:64px;height:64px;background:var(--g);border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;box-shadow:0 6px 20px rgba(29,158,117,.3)}
+.logo svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#loginView h1{font-size:22px;font-weight:700;margin-bottom:4px}
+#loginView p{font-size:14px;color:var(--mu);margin-bottom:1.5rem}
+.card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+label{display:block;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;text-align:left}
+input[type=password],input[type=text],input[type=search]{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:15px;color:var(--tx);background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s}
+input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.13);background:#fff}
+.btn{width:100%;padding:13px;background:var(--g);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:1rem;transition:background .18s}
+.btn:hover{background:var(--gd)}.btn:disabled{background:#b0b0b0;cursor:not-allowed}
+.err{margin-top:.75rem;font-size:13px;color:var(--red);display:none}
+.err.show{display:block}
+
+/* PAINEL */
+#painelView{display:none}
+#painelView.show{display:block}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.topbar h2{font-size:20px;font-weight:700}
+.logout-btn{font-size:13px;color:var(--red);background:none;border:1px solid #f7a0a0;border-radius:8px;padding:6px 14px;cursor:pointer}
+.search-row{display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap}
+.search-row input{flex:1;min-width:200px}
+.search-btn{padding:11px 20px;background:var(--g);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+.search-btn:hover{background:var(--gd)}
+
+/* CARDS de resultado */
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+.aluno-card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05);transition:box-shadow .2s}
+.aluno-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.aluno-foto{width:100%;height:180px;object-fit:cover;display:block;background:#f0f0ee}
+.aluno-foto-ph{width:100%;height:180px;background:#e8e8e6;display:flex;align-items:center;justify-content:center;font-size:48px}
+.aluno-info{padding:1rem}
+.aluno-nome{font-size:15px;font-weight:700;margin-bottom:4px}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;margin-bottom:6px}
+.badge-curso{background:#E1F5EE;color:#085041}
+.badge-turno{background:#FAEEDA;color:#633806;margin-left:4px}
+.aluno-meta{font-size:12px;color:var(--mu);margin-top:4px}
+.del-btn{width:100%;margin-top:.75rem;padding:8px;background:none;border:1px solid #f7a0a0;color:var(--red);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.del-btn:hover{background:var(--redl)}
+
+.empty{text-align:center;padding:3rem 1rem;color:var(--mu)}
+.empty-icon{font-size:48px;margin-bottom:1rem}
+
+/* status global */
+.gstatus{padding:12px 16px;border-radius:10px;font-size:14px;margin-bottom:1rem;display:none;align-items:center;gap:10px}
+.gstatus.show{display:flex}
+.gstatus.ok{background:#E1F5EE;color:#085041;border:1px solid #5DCAA5}
+.gstatus.er{background:#FEF0F0;color:#7A1F1F;border:1px solid #f7a0a0}
+.gstatus.ld{background:#f5f5f3;color:#555;border:1px solid #ddd}
+.spin{width:16px;height:16px;flex-shrink:0;border:2px solid #ddd;border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* modal confirmação */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:var(--r);padding:1.5rem;max-width:360px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.modal h3{font-size:18px;font-weight:700;margin-bottom:.5rem}
+.modal p{font-size:14px;color:var(--mu);margin-bottom:1.25rem;line-height:1.5}
+.modal-btns{display:flex;gap:.75rem}
+.modal-btns button{flex:1;padding:11px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;border:none}
+.btn-cancel{background:#f0f0ee;color:var(--tx)}
+.btn-del{background:var(--red);color:#fff}
+
+.total-badge{background:#e8e8e6;color:var(--mu);font-size:12px;padding:3px 10px;border-radius:20px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="loginView">
+    <div class="logo">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h1>Painel Administrativo</h1>
+    <p>Acesso restrito — informe a senha</p>
+    <div class="card">
+      <label for="senhaInput">Senha</label>
+      <input type="password" id="senhaInput" placeholder="Digite a senha" onkeydown="if(event.key==='Enter')login()"/>
+      <button class="btn" onclick="login()">Entrar</button>
+      <div class="err" id="loginErr">Senha incorreta. Tente novamente.</div>
+    </div>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="painelView">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <h2>Cadastros de alunos</h2>
+        <span class="total-badge" id="totalBadge">0 alunos</span>
+      </div>
+      <button class="logout-btn" onclick="logout()">Sair</button>
+    </div>
+
+    <div class="search-row">
+      <input type="search" id="queryInput" placeholder="Buscar por nome ou ID de turma..." onkeydown="if(event.key==='Enter')buscar()"/>
+      <button class="search-btn" onclick="buscar()">🔍 Buscar</button>
+      <button class="search-btn" style="background:#555" onclick="buscarTodos()">Todos</button>
+    </div>
+
+    <div class="gstatus" id="gst"><span id="gsi"></span><span id="gsm"></span></div>
+
+    <div id="resultados"></div>
+  </div>
+
+</div>
+
+<!-- MODAL CONFIRMAR EXCLUSÃO -->
+<div class="overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>Excluir cadastro?</h3>
+    <p id="modalMsg">O cadastro do aluno será removido permanentemente da planilha, permitindo novo envio.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-del" onclick="confirmarExclusao()">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwlk23kIjp8AujXVvHN3BMe1alswv5z53tEY0lwNSZm/exec';
+let senhaAtual='';
+let pendente=null; // item aguardando exclusão
+
+// ── LOGIN ──
+function login(){
+  const s=document.getElementById('senhaInput').value;
+  if(!s){return}
+  senhaAtual=s;
+  // testa a senha fazendo uma busca vazia
+  setGStatus('ld','Verificando...');
+  post({acao:'buscar',senha:s,query:''})
+    .then(r=>{
+      if(r.status==='erro'){
+        document.getElementById('loginErr').classList.add('show');
+        senhaAtual='';
+        hideGStatus();
+      } else {
+        document.getElementById('loginView').style.display='none';
+        document.getElementById('painelView').classList.add('show');
+        renderResultados(r.dados);
+        hideGStatus();
+      }
+    }).catch(()=>{setGStatus('er','Falha na conexão.')});
+}
+
+function logout(){
+  senhaAtual='';
+  document.getElementById('loginView').style.display='block';
+  document.getElementById('painelView').classList.remove('show');
+  document.getElementById('senhaInput').value='';
+  document.getElementById('loginErr').classList.remove('show');
+  document.getElementById('resultados').innerHTML='';
+}
+
+// ── BUSCA ──
+function buscar(){
+  const q=document.getElementById('queryInput').value.trim();
+  if(!q){buscarTodos();return}
+  setGStatus('ld','Buscando...');
+  post({acao:'buscar',senha:senhaAtual,query:q})
+    .then(r=>{
+      hideGStatus();
+      if(r.status==='erro'){setGStatus('er',r.msg);return}
+      renderResultados(r.dados);
+    }).catch(()=>setGStatus('er','Falha na conexão.'));
+}
+
+function buscarTodos(){
+  document.getElementById('queryInput').value='';
+  setGStatus('ld','Carregando todos os cadastros...');
+  post({acao:'buscar',senha:senhaAtual,query:''})
+    .then(r=>{
+      hideGStatus();
+      if(r.status==='erro'){setGStatus('er',r.msg);return}
+      renderResultados(r.dados);
+    }).catch(()=>setGStatus('er','Falha na conexão.'));
+}
+
+// ── RENDER ──
+function renderResultados(dados){
+  const el=document.getElementById('resultados');
+  document.getElementById('totalBadge').textContent=dados.length+' aluno'+(dados.length!==1?'s':'');
+  if(!dados.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><p>Nenhum cadastro encontrado.</p></div>';
+    return;
+  }
+  // Agrupa por curso
+  const grupos={};
+  dados.forEach(a=>{
+    const c=a.curso||'Sem curso';
+    if(!grupos[c])grupos[c]=[];
+    grupos[c].push(a);
+  });
+  let html='';
+  Object.keys(grupos).sort().forEach(curso=>{
+    html+=`<div style="margin-bottom:1.75rem">
+      <h3 style="font-size:14px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--bd)">${curso} <span style="font-weight:400">(${grupos[curso].length})</span></h3>
+      <div class="results-grid">`;
+    grupos[curso].forEach(a=>{
+      const fotoTag=a.linkFoto && a.linkFoto.startsWith('http')
+        ? `<img class="aluno-foto" src="${a.linkFoto}" alt="Foto de ${a.nome}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+           <div class="aluno-foto-ph" style="display:none">👤</div>`
+        : `<div class="aluno-foto-ph">👤</div>`;
+      html+=`<div class="aluno-card">
+        ${fotoTag}
+        <div class="aluno-info">
+          <div class="aluno-nome">${esc(a.nome)}</div>
+          <span class="badge badge-curso">${esc(a.curso)}</span>
+          <span class="badge badge-turno">${esc(a.turno)}</span>
+          <div class="aluno-meta">🪪 Turma: ${esc(a.idTurma)}</div>
+          <div class="aluno-meta">🕐 ${esc(a.data)}</div>
+          <button class="del-btn" onclick="abrirModal(${JSON.stringify(a)})">🗑 Excluir cadastro</button>
+        </div>
+      </div>`;
+    });
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+// ── MODAL EXCLUSÃO ──
+function abrirModal(item){
+  pendente=item;
+  document.getElementById('modalMsg').textContent=
+    `"${item.nome}" (Turma: ${item.idTurma}) será removido permanentemente. O aluno poderá cadastrar novamente após a exclusão.`;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function fecharModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+  pendente=null;
+}
+function confirmarExclusao(){
+  if(!pendente)return;
+  fecharModal();
+  setGStatus('ld','Excluindo cadastro...');
+  post({acao:'excluir',senha:senhaAtual,curso:pendente.curso,linhaIdx:pendente.linhaIdx})
+    .then(r=>{
+      if(r.status==='ok'){
+        setGStatus('ok','Cadastro excluído com sucesso!');
+        buscarTodos();
+      } else {
+        setGStatus('er',r.msg||'Erro ao excluir.');
+      }
+    }).catch(()=>setGStatus('er','Falha na conexão.'));
+}
+
+// ── HELPERS ──
+function post(body){
+  return fetch(SCRIPT_URL,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  }).then(r=>r.json());
+}
+
+function setGStatus(tipo,msg){
+  const b=document.getElementById('gst'),i=document.getElementById('gsi');
+  b.className='gstatus show '+tipo;
+  i.innerHTML=tipo==='ld'?'<div class="spin"></div>':tipo==='ok'?'✅':'❌';
+  document.getElementById('gsm').textContent=msg;
+}
+function hideGStatus(){document.getElementById('gst').className='gstatus'}
+
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Fechar modal clicando fora
+document.getElementById('modalOverlay').addEventListener('click',function(e){
+  if(e.target===this)fecharModal();
+});
+</script>
+</body>
+</html>
