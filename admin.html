@@ -6,10 +6,9 @@
 <title>Painel Pedagógico</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#6b7280;--bd:#e5e7eb;--bg:#f3f4f6;--cd:#fff;--r:12px;--red:#dc2626;--redl:#fef2f2;--dark:#111827;--dark2:#1f2937;--dark3:#374151}
+:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#6b7280;--bd:#e5e7eb;--bg:#f3f4f6;--cd:#fff;--r:12px;--red:#dc2626;--redl:#fef2f2;--dark:#111827;--dark2:#1f2937}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
 
-/* ── LOGIN ── */
 #loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
 .login-box{background:var(--cd);border-radius:20px;border:1px solid var(--bd);padding:2.5rem 2rem;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(0,0,0,.08);text-align:center}
 .login-logo{width:72px;height:72px;background:var(--g);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;box-shadow:0 6px 20px rgba(29,158,117,.3)}
@@ -23,7 +22,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .login-btn:hover{background:var(--gd)}.login-btn:disabled{background:#9ca3af;cursor:not-allowed}
 .login-err{margin-top:.75rem;font-size:13px;color:var(--red);display:none}.login-err.show{display:block}
 
-/* ── LAYOUT ── */
 #painelView{display:none;min-height:100vh}
 #painelView.show{display:flex}
 .sidebar{width:270px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:20}
@@ -33,48 +31,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .s-logo-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .s-logo-txt{font-size:14px;font-weight:700;color:#fff;line-height:1.3}
 .s-logo-sub{font-size:11px;color:#9ca3af}
-
-/* abas da sidebar */
 .s-tabs{display:flex;padding:.75rem .75rem 0;gap:4px}
 .s-tab{flex:1;padding:7px 4px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#9ca3af;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .18s}
 .s-tab.active{background:var(--g);color:#fff;border-color:var(--g)}
 .s-tab:hover:not(.active){background:rgba(255,255,255,.07);color:#fff}
-
 .s-panel{padding:.75rem}
 .s-panel.hidden{display:none}
-
-/* filtros */
 .f-label{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;display:block;margin-top:.75rem}
 .f-input{width:100%;padding:8px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-size:13px;outline:none;transition:border-color .18s}
 .f-input:focus{border-color:var(--g);background:rgba(255,255,255,.1)}
 .f-input option{background:var(--dark2);color:#fff}
 .clear-btn{width:100%;margin-top:.75rem;padding:8px;background:transparent;color:#9ca3af;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:12px;cursor:pointer;transition:all .18s}
 .clear-btn:hover{background:rgba(255,255,255,.07);color:#fff}
-
-/* gestão de turmas */
 .turma-form{background:rgba(255,255,255,.05);border-radius:10px;padding:.875rem;margin-bottom:.75rem}
-.turma-form-title{font-size:12px;font-weight:700;color:#e5e7eb;margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.turma-form-title{font-size:12px;font-weight:700;color:#e5e7eb;margin-bottom:.75rem}
 .tf-input{width:100%;padding:7px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fff;font-size:13px;outline:none;margin-bottom:6px}
 .tf-input:focus{border-color:var(--g)}
 .tf-input option{background:var(--dark2)}
 .criar-btn{width:100%;padding:9px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;margin-top:2px}
 .criar-btn:hover{background:var(--gd)}.criar-btn:disabled{background:#4b5563;cursor:not-allowed}
-
 .turmas-list{display:flex;flex-direction:column;gap:6px;margin-top:.5rem}
 .turma-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.625rem .75rem;display:flex;align-items:center;justify-content:space-between;gap:8px}
 .turma-item-info{flex:1;min-width:0}
 .turma-item-id{font-size:12px;font-weight:700;color:#f9fafb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.turma-item-meta{font-size:11px;color:#9ca3af;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.turma-item-meta{font-size:11px;color:#9ca3af;margin-top:2px}
 .turma-del{background:none;border:none;color:#6b7280;cursor:pointer;font-size:16px;flex-shrink:0;padding:2px 4px;border-radius:4px;line-height:1;transition:color .15s}
 .turma-del:hover{color:#f87171}
 .no-turmas{font-size:12px;color:#6b7280;text-align:center;padding:.75rem 0}
-
 .s-footer{margin-top:auto;padding:.75rem;border-top:1px solid rgba(255,255,255,.08)}
 .logout-btn{width:100%;padding:9px;background:transparent;color:#9ca3af;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .18s}
 .logout-btn:hover{background:rgba(220,38,38,.15);color:#fca5a5;border-color:rgba(220,38,38,.3)}
 .logout-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── MAIN ── */
 .main{margin-left:270px;flex:1;display:flex;flex-direction:column;min-width:0}
 .topbar{background:var(--cd);border-bottom:1px solid var(--bd);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:10}
 .topbar h2{font-size:18px;font-weight:700}
@@ -82,13 +70,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .stats-row{display:flex;gap:.75rem;flex-wrap:wrap}
 .stat-pill{background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--mu);white-space:nowrap}
 .stat-pill span{color:var(--tx);font-weight:700}
-
 .content{padding:1.5rem;flex:1}
 .curso-section{margin-bottom:2rem}
 .curso-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:2px solid var(--gl)}
 .curso-badge{background:var(--g);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
 .curso-count{font-size:13px;color:var(--mu)}
-
 .alunos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem}
 .aluno-card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;transition:box-shadow .2s,transform .2s}
 .aluno-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
@@ -105,14 +91,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .del-btn{width:100%;padding:7px;background:none;border:none;border-top:1px solid var(--bd);color:#9ca3af;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s}
 .del-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .del-btn:hover{background:var(--redl);color:var(--red)}
-
 .empty-state{text-align:center;padding:4rem 1rem;color:var(--mu)}
 .empty-icon{font-size:56px;margin-bottom:1rem}
 .empty-state h3{font-size:16px;font-weight:600;margin-bottom:4px}
 .big-spin{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* lightbox */
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:150;padding:1rem;flex-direction:column;gap:1rem}
 .lightbox.show{display:flex}
 .lightbox img{max-width:90vw;max-height:68vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.5)}
@@ -120,8 +103,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .lb-nome{font-size:18px;font-weight:700;margin-bottom:4px}
 .lb-meta{font-size:13px;opacity:.8}
 .lb-close{position:fixed;top:1rem;right:1rem;width:40px;height:40px;background:rgba(255,255,255,.15);border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-
-/* modais */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:160;padding:1rem}
 .overlay.show{display:flex}
 .modal{background:#fff;border-radius:16px;padding:1.75rem;max-width:360px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.2)}
@@ -131,18 +112,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .modal-btns button{flex:1;padding:11px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:background .15s}
 .btn-cancel{background:#f3f4f6;color:var(--tx)}.btn-cancel:hover{background:#e5e7eb}
 .btn-del{background:var(--red);color:#fff}.btn-del:hover{background:#b91c1c}
-
-/* toast */
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--dark2);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s;z-index:200;display:flex;align-items:center;gap:10px;max-width:320px}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--dark2);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s;z-index:200;max-width:320px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.ok{border-left:4px solid var(--g)}.toast.er{border-left:4px solid var(--red)}
-
 .spin-sm{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:4px}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginView">
   <div class="login-box">
     <div class="login-logo"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
@@ -155,10 +132,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
-<!-- PAINEL -->
 <div id="painelView">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <div class="s-logo">
@@ -166,14 +140,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         <div><div class="s-logo-txt">Painel Pedagógico</div><div class="s-logo-sub">Administração</div></div>
       </div>
     </div>
-
-    <!-- abas da sidebar -->
     <div class="s-tabs">
       <button class="s-tab active" onclick="switchTab('filtros')">🔍 Filtros</button>
       <button class="s-tab" onclick="switchTab('turmas')">🏫 Turmas</button>
     </div>
-
-    <!-- PAINEL FILTROS -->
     <div class="s-panel" id="panelFiltros">
       <span class="f-label">Nome do aluno</span>
       <input type="text" class="f-input" id="fNome" placeholder="Buscar por nome..." oninput="filtrar()"/>
@@ -188,12 +158,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
       </select>
       <button class="clear-btn" onclick="limparFiltros()">✕ Limpar filtros</button>
     </div>
-
-    <!-- PAINEL TURMAS -->
     <div class="s-panel hidden" id="panelTurmas">
       <div class="turma-form">
         <div class="turma-form-title">➕ Nova turma</div>
-        <input type="text" class="tf-input" id="ntId" placeholder="ID da turma (ex: 2025-ENF-01)" maxlength="30"/>
+        <input type="text" class="tf-input" id="ntId" placeholder="ID (ex: 2025-ENF-01)" maxlength="30"/>
         <input type="text" class="tf-input" id="ntCurso" placeholder="Curso (ex: Enfermagem)" maxlength="50"/>
         <select class="tf-input" id="ntTurno">
           <option value="">Selecione o turno</option>
@@ -201,9 +169,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
         </select>
         <button class="criar-btn" id="btnCriar" onclick="criarTurma()">Criar turma</button>
       </div>
-      <div id="turmasList"><div class="no-turmas">Carregando turmas...</div></div>
+      <div id="turmasList"><div class="no-turmas">Carregando...</div></div>
     </div>
-
     <div class="s-footer">
       <button class="logout-btn" onclick="logout()">
         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -212,13 +179,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
     </div>
   </aside>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div>
-        <h2>Alunos cadastrados</h2>
-        <p id="topbarSub">Carregando dados...</p>
-      </div>
+      <div><h2>Alunos cadastrados</h2><p id="topbarSub">Carregando...</p></div>
       <div class="stats-row">
         <div class="stat-pill">Total: <span id="statTotal">—</span></div>
         <div class="stat-pill">Cursos: <span id="statCursos">—</span></div>
@@ -231,18 +194,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="fecharLB()">
   <button class="lb-close" onclick="fecharLB()">✕</button>
-  <img id="lbImg" src="" alt="Foto do aluno"/>
+  <img id="lbImg" src="" alt="Foto"/>
   <div class="lb-info"><div class="lb-nome" id="lbNome"></div><div class="lb-meta" id="lbMeta"></div></div>
 </div>
 
-<!-- MODAL EXCLUIR ALUNO -->
 <div class="overlay" id="overlayAluno">
   <div class="modal">
-    <h3>Excluir cadastro?</h3>
-    <p id="modalAlunoMsg"></p>
+    <h3>Excluir cadastro?</h3><p id="modalAlunoMsg"></p>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="fecharModalAluno()">Cancelar</button>
       <button class="btn-del" onclick="confirmarExclusaoAluno()">Excluir</button>
@@ -250,11 +210,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
-<!-- MODAL EXCLUIR TURMA -->
 <div class="overlay" id="overlayTurma">
   <div class="modal">
-    <h3>Remover turma?</h3>
-    <p id="modalTurmaMsg"></p>
+    <h3>Remover turma?</h3><p id="modalTurmaMsg"></p>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="fecharModalTurma()">Cancelar</button>
       <button class="btn-del" onclick="confirmarExclusaoTurma()">Remover</button>
@@ -265,12 +223,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 <div class="toast" id="toast"></div>
 
 <script>
-const URL = 'https://script.google.com/macros/s/AKfycbxYyCMJGA4c5jXO2wcoLEaAV7zSj75t7dK2RhOxUDkeQKWWoXJ1xyg3tKWFiH6B4eDI3g/exec';
+// ── CONFIG ──
+const BASE = 'https://script.google.com/macros/s/AKfycbxYyCMJGA4c5jXO2wcoLEaAV7zSj75t7dK2RhOxUDkeQKWWoXJ1xyg3tKWFiH6B4eDI3g/exec';
+
 let senha = '';
 let todosAlunos = [];
 let todasTurmas = [];
 let pendAluno = null;
 let pendTurma = null;
+
+// ── CHAMADA VIA GET (resolve CORS) ──
+function api(params) {
+  const qs = new URLSearchParams(params).toString();
+  return fetch(`${BASE}?${qs}`, { method: 'GET' }).then(r => r.json());
+}
 
 // ── LOGIN ──
 async function login() {
@@ -279,8 +245,9 @@ async function login() {
   const btn = document.getElementById('loginBtn');
   btn.textContent = 'Verificando...'; btn.disabled = true;
   try {
-    const r = await post({ acao: 'buscar', senha: s, query: '' });
+    const r = await api({ acao: 'buscar', senha: s, query: '' });
     if (r.status === 'erro') {
+      document.getElementById('loginErr').textContent = r.msg === 'Senha incorreta.' ? 'Senha incorreta. Tente novamente.' : 'Erro: ' + r.msg;
       document.getElementById('loginErr').classList.add('show');
       btn.textContent = 'Entrar'; btn.disabled = false;
     } else {
@@ -288,12 +255,11 @@ async function login() {
       document.getElementById('loginView').style.display = 'none';
       document.getElementById('painelView').classList.add('show');
       todosAlunos = r.dados || [];
-      popularFiltros();
-      renderAlunos(todosAlunos);
+      popularFiltros(); renderAlunos(todosAlunos);
       carregarTurmas();
     }
-  } catch {
-    document.getElementById('loginErr').textContent = 'Falha na conexão.';
+  } catch(e) {
+    document.getElementById('loginErr').textContent = 'Falha na conexão: ' + e.message;
     document.getElementById('loginErr').classList.add('show');
     btn.textContent = 'Entrar'; btn.disabled = false;
   }
@@ -309,17 +275,17 @@ function logout() {
   document.getElementById('loginBtn').disabled = false;
 }
 
-// ── TABS SIDEBAR ──
+// ── TABS ──
 function switchTab(tab) {
-  document.querySelectorAll('.s-tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (tab === 'filtros')));
+  document.querySelectorAll('.s-tab').forEach((t, i) => t.classList.toggle('active', (i===0)===(tab==='filtros')));
   document.getElementById('panelFiltros').classList.toggle('hidden', tab !== 'filtros');
   document.getElementById('panelTurmas').classList.toggle('hidden', tab !== 'turmas');
 }
 
 // ── TURMAS ──
 async function carregarTurmas() {
-  const r = await post({ acao: 'listarTurmas' }).catch(() => ({ status: 'erro' }));
-  todasTurmas = r.status === 'ok' ? r.turmas : [];
+  const r = await api({ acao: 'listarTurmas' }).catch(() => ({ status: 'erro', turmas: [] }));
+  todasTurmas = r.turmas || [];
   renderTurmas();
 }
 
@@ -332,7 +298,7 @@ function renderTurmas() {
         <div class="turma-item-id">${esc(t.idTurma)}</div>
         <div class="turma-item-meta">${esc(t.curso)} • ${esc(t.turno)}</div>
       </div>
-      <button class="turma-del" onclick="abrirModalTurma(${JSON.stringify(t).replace(/"/g,'&quot;')})" title="Remover turma">✕</button>
+      <button class="turma-del" onclick='abrirModalTurma(${JSON.stringify(t)})' title="Remover">✕</button>
     </div>`).join('') + '</div>';
 }
 
@@ -344,14 +310,14 @@ async function criarTurma() {
   const btn = document.getElementById('btnCriar');
   btn.disabled = true; btn.innerHTML = '<span class="spin-sm"></span> Criando...';
   try {
-    const r = await post({ acao: 'criarTurma', senha, idTurma, curso, turno });
+    const r = await api({ acao: 'criarTurma', senha, idTurma, curso, turno });
     if (r.status === 'ok') {
       toast('ok', r.msg);
       document.getElementById('ntId').value = '';
       document.getElementById('ntCurso').value = '';
       document.getElementById('ntTurno').selectedIndex = 0;
       await carregarTurmas();
-    } else { toast('er', r.msg); }
+    } else toast('er', r.msg);
   } catch { toast('er', 'Falha na conexão.'); }
   btn.disabled = false; btn.textContent = 'Criar turma';
 }
@@ -359,14 +325,14 @@ async function criarTurma() {
 function abrirModalTurma(t) {
   pendTurma = t;
   document.getElementById('modalTurmaMsg').textContent =
-    `A turma "${t.idTurma}" (${t.curso}) será removida do controle. Os alunos já cadastrados permanecem na planilha.`;
+    `A turma "${t.idTurma}" (${t.curso}) será removida do controle. Alunos já cadastrados permanecem na planilha.`;
   document.getElementById('overlayTurma').classList.add('show');
 }
 function fecharModalTurma() { document.getElementById('overlayTurma').classList.remove('show'); pendTurma = null; }
 
 async function confirmarExclusaoTurma() {
   if (!pendTurma) return; fecharModalTurma();
-  const r = await post({ acao: 'excluirTurma', senha, idTurma: pendTurma.idTurma }).catch(() => ({ status: 'erro', msg: 'Falha.' }));
+  const r = await api({ acao: 'excluirTurma', senha, idTurma: pendTurma.idTurma }).catch(() => ({ status: 'erro', msg: 'Falha.' }));
   if (r.status === 'ok') { toast('ok', r.msg); await carregarTurmas(); }
   else toast('er', r.msg);
 }
@@ -408,7 +374,7 @@ function renderAlunos(lista) {
   document.getElementById('statTurmas').textContent = turmas.length;
   document.getElementById('topbarSub').textContent  =
     lista.length === todosAlunos.length
-      ? `${lista.length} aluno${lista.length !== 1 ? 's' : ''} cadastrado${lista.length !== 1 ? 's' : ''}`
+      ? `${lista.length} aluno${lista.length!==1?'s':''} cadastrado${lista.length!==1?'s':''}`
       : `${lista.length} de ${todosAlunos.length} alunos (filtro ativo)`;
 
   if (!lista.length) {
@@ -417,14 +383,15 @@ function renderAlunos(lista) {
   }
   let html = '';
   cursos.forEach(curso => {
-    const grupo = lista.filter(a => (a.curso || 'Sem curso') === curso);
+    const grupo = lista.filter(a => (a.curso||'Sem curso') === curso);
     html += `<div class="curso-section">
-      <div class="curso-header"><span class="curso-badge">${esc(curso)}</span><span class="curso-count">${grupo.length} aluno${grupo.length !== 1?'s':''}</span></div>
+      <div class="curso-header"><span class="curso-badge">${esc(curso)}</span><span class="curso-count">${grupo.length} aluno${grupo.length!==1?'s':''}</span></div>
       <div class="alunos-grid">`;
     grupo.forEach(a => {
       const temFoto = a.linkFoto?.startsWith('http');
+      const aJson = JSON.stringify(a).replace(/'/g, '&#39;');
       html += `<div class="aluno-card">
-        <div class="foto-wrap" onclick="abrirFoto(${JSON.stringify(a).replace(/"/g,'&quot;')})">
+        <div class="foto-wrap" onclick='abrirFoto(${aJson})'>
           ${temFoto
             ? `<img src="${esc(a.linkFoto)}" alt="${esc(a.nome)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
                <div class="foto-ph" style="display:none">👤</div>`
@@ -437,7 +404,7 @@ function renderAlunos(lista) {
           <div class="aluno-turma">🪪 ${esc(a.idTurma)}</div>
           <div class="aluno-data">📅 ${esc(a.data)}</div>
         </div>
-        <button class="del-btn" onclick="abrirModalAluno(${JSON.stringify(a).replace(/"/g,'&quot;')})">
+        <button class="del-btn" onclick='abrirModalAluno(${aJson})'>
           <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           Excluir cadastro
         </button>
@@ -469,7 +436,7 @@ function fecharModalAluno() { document.getElementById('overlayAluno').classList.
 
 async function confirmarExclusaoAluno() {
   if (!pendAluno) return; fecharModalAluno();
-  const r = await post({ acao: 'excluir', senha, curso: pendAluno.curso, linhaIdx: pendAluno.linhaIdx }).catch(() => ({ status: 'erro', msg: 'Falha.' }));
+  const r = await api({ acao: 'excluir', senha, curso: pendAluno.curso, linhaIdx: pendAluno.linhaIdx }).catch(() => ({ status: 'erro', msg: 'Falha.' }));
   if (r.status === 'ok') {
     todosAlunos = todosAlunos.filter(a => !(a.curso === pendAluno.curso && a.linhaIdx === pendAluno.linhaIdx));
     popularFiltros(); filtrar();
@@ -478,23 +445,20 @@ async function confirmarExclusaoAluno() {
 }
 
 // ── HELPERS ──
-function post(body) {
-  return fetch(URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(r => r.json());
-}
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 let toastTimer;
 function toast(tipo, msg) {
   const el = document.getElementById('toast');
   el.className = 'toast show ' + tipo;
-  el.textContent = (tipo === 'ok' ? '✅ ' : '❌ ') + msg;
+  el.textContent = (tipo==='ok'?'✅ ':'❌ ') + msg;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-document.getElementById('overlayAluno').addEventListener('click', e => { if (e.target === document.getElementById('overlayAluno')) fecharModalAluno(); });
-document.getElementById('overlayTurma').addEventListener('click', e => { if (e.target === document.getElementById('overlayTurma')) fecharModalTurma(); });
-document.getElementById('lightbox').addEventListener('click', e => { if (e.target === document.getElementById('lightbox')) fecharLB(); });
+document.getElementById('overlayAluno').addEventListener('click', e => { if(e.target===document.getElementById('overlayAluno')) fecharModalAluno(); });
+document.getElementById('overlayTurma').addEventListener('click', e => { if(e.target===document.getElementById('overlayTurma')) fecharModalTurma(); });
+document.getElementById('lightbox').addEventListener('click',     e => { if(e.target===document.getElementById('lightbox')) fecharLB(); });
 </script>
 </body>
 </html>
