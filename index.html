@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Cadastro — Carômetro Digital</title>
+<title>Coordenação — Carômetro Digital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -11,357 +11,534 @@
 :root{
   --g:#1D9E75;--gd:#0a6e4f;--gl:#e8f8f2;
   --tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;
-  --bg:#f0f4f8;--cd:#fff;--r:16px;
-  --red:#ef4444;
+  --bg:#f0f4f8;--cd:#fff;--r:12px;
+  --red:#ef4444;--redl:#fef2f2;
+  --dark:#0f172a;--dark2:#1e293b;--dark3:#334155;
 }
-body{font-family:'Sora',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
 
-.container{width:100%;max-width:460px}
+/* ── LOGIN ── */
+#loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;background:linear-gradient(135deg,#0f172a 0%,#1e293b 40%,#0a4a30 100%)}
+.login-card{background:var(--cd);border-radius:20px;padding:2.75rem 2.25rem;width:100%;max-width:400px;box-shadow:0 32px 64px rgba(0,0,0,.3)}
+.login-logo-wrap{width:76px;height:76px;background:linear-gradient(135deg,var(--g),var(--gd));border-radius:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(29,158,117,.4)}
+.login-logo-wrap svg{width:38px;height:38px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.login-card h1{font-size:26px;font-weight:800;text-align:center;letter-spacing:-.5px;margin-bottom:4px}
+.login-card p{font-size:14px;color:var(--mu);text-align:center;margin-bottom:2rem}
+.fg{margin-bottom:1rem}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.fg input{width:100%;padding:12px 16px;border:1.5px solid var(--bd);border-radius:10px;font-size:15px;font-family:'Sora',sans-serif;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
+.fg input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;box-shadow:0 6px 20px rgba(29,158,117,.3);margin-top:.25rem}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(29,158,117,.4)}
+.login-btn:disabled{background:#94a3b8;box-shadow:none;transform:none;cursor:not-allowed}
+.login-err{margin-top:.875rem;padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;font-size:13px;color:#991b1b;display:none;font-weight:600}
+.login-err.show{display:block}
 
-.header{text-align:center;margin-bottom:2rem}
-.brand{display:inline-flex;align-items:center;gap:10px;background:var(--dark,#0f172a);color:#fff;padding:8px 18px;border-radius:50px;margin-bottom:1.5rem;font-size:13px;font-weight:700;letter-spacing:.05em}
-.brand-dot{width:8px;height:8px;background:var(--g);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
-h1{font-size:26px;font-weight:800;color:var(--tx);letter-spacing:-.5px;margin-bottom:6px}
-.sub{font-size:14px;color:var(--mu)}
+/* ── LAYOUT ── */
+#painelView{display:none;min-height:100vh;flex-direction:column}
+#painelView.show{display:flex}
 
-.card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);padding:1.75rem;margin-bottom:1rem;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+/* TOPBAR */
+.topbar{background:var(--dark);padding:0 1.5rem;height:64px;display:flex;align-items:center;justify-content:space-between;gap:1rem;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.tb-brand{display:flex;align-items:center;gap:12px}
+.tb-logo{width:38px;height:38px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.tb-logo svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tb-name{font-size:15px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.tb-sub{font-size:11px;color:#64748b}
+.tb-right{display:flex;align-items:center;gap:.75rem}
+.tb-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:600;color:#64748b}
+.tb-stat b{color:#fff}
+.tb-logout{padding:7px 16px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:13px;font-weight:600;color:#64748b;cursor:pointer;font-family:'Sora',sans-serif;display:flex;align-items:center;gap:6px;transition:all .18s}
+.tb-logout:hover{background:rgba(239,68,68,.15);color:#fca5a5;border-color:rgba(239,68,68,.3)}
+.tb-logout svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* Foto */
-.foto-section{margin-bottom:1.5rem}
-.foto-label{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;display:block}
-.foto-tabs{display:flex;background:#f1f5f9;border-radius:10px;padding:3px;margin-bottom:1rem;gap:3px}
-.foto-tab{flex:1;padding:8px;background:transparent;border:none;border-radius:8px;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;transition:all .18s;font-family:'Sora',sans-serif}
-.foto-tab.active{background:#fff;color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+/* TABS */
+.tabs{background:var(--cd);border-bottom:1px solid var(--bd)}
+.tabs-inner{max-width:1400px;margin:0 auto;padding:0 1.5rem;display:flex;gap:0}
+.tab-btn{padding:16px 24px;font-size:14px;font-weight:700;color:var(--mu);border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;transition:all .18s;display:flex;align-items:center;gap:8px;font-family:'Sora',sans-serif;letter-spacing:-.2px}
+.tab-btn:hover{color:var(--tx)}
+.tab-btn.active{color:var(--g);border-bottom-color:var(--g)}
+.tab-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* camera */
-.camera-area{position:relative;border-radius:12px;overflow:hidden;background:#0f172a;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
-.camera-area video{width:100%;height:100%;object-fit:cover;display:block}
-.camera-area canvas{display:none}
-.cam-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:rgba(255,255,255,.6)}
-.cam-overlay svg{width:48px;height:48px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.cam-btn{padding:10px 24px;background:var(--g);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:all .18s;box-shadow:0 4px 12px rgba(29,158,117,.35)}
-.cam-btn:hover{background:var(--gd);transform:translateY(-1px)}
-.cam-controls{display:flex;gap:.75rem;margin-top:.75rem;justify-content:center}
+/* PAGES */
+.page{display:none;max-width:1400px;margin:0 auto;padding:1.5rem}
+.page.active{display:block}
 
-/* upload */
-.upload-area{border:2px dashed var(--bd);border-radius:12px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;cursor:pointer;transition:all .2s;background:#fafafa;overflow:hidden;position:relative}
-.upload-area:hover{border-color:var(--g);background:var(--gl)}
-.upload-area.has-foto{border-style:solid;border-color:var(--g);padding:0}
-.upload-area img{width:100%;height:100%;object-fit:cover;display:block}
-.upload-icon{font-size:42px;color:#cbd5e1}
-.upload-txt{font-size:14px;font-weight:600;color:var(--mu)}
-.upload-hint{font-size:12px;color:#94a3b8}
-.rm-foto{font-size:12px;color:var(--red);background:none;border:none;cursor:pointer;margin-top:.5rem;font-family:'Sora',sans-serif;font-weight:600}
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem 1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.stat-lbl{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.stat-val{font-size:32px;font-weight:800;letter-spacing:-1.5px;color:var(--tx)}
+.stat-card.accent .stat-val{color:var(--g)}
 
-/* preview foto capturada */
-.foto-preview{border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;display:none;position:relative}
-.foto-preview img{width:100%;height:100%;object-fit:cover;display:block}
-.foto-preview-actions{display:flex;gap:.5rem;margin-top:.5rem;justify-content:center}
-.foto-preview-actions button{padding:7px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;border:none;transition:all .18s}
-.btn-retirar{background:#f1f5f9;color:var(--tx)}.btn-retirar:hover{background:#e2e8f0}
-.btn-usar{background:var(--g);color:#fff}.btn-usar:hover{background:var(--gd)}
+/* FILTROS */
+.filters{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.filters-grid{display:grid;grid-template-columns:2fr repeat(3,1fr) auto;gap:.75rem;align-items:end}
+.fg2 label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px}
+.fg2 input,.fg2 select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:8px;font-size:13px;font-family:'Sora',sans-serif;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
+.fg2 input:focus,.fg2 select:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1);background:#fff}
+.clr-btn{padding:9px 16px;background:#f1f5f9;border:1.5px solid var(--bd);border-radius:8px;font-size:13px;font-weight:700;color:var(--mu);cursor:pointer;white-space:nowrap;font-family:'Sora',sans-serif;transition:all .18s}
+.clr-btn:hover{border-color:var(--red);color:var(--red);background:var(--redl)}
 
-/* campos */
-.field{margin-bottom:1.25rem}.field:last-child{margin-bottom:0}
-label{display:block;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-input{width:100%;padding:12px 16px;border:1.5px solid var(--bd);border-radius:10px;font-size:15px;font-family:'Sora',sans-serif;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
-input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
-input.valid{border-color:var(--g);background:#fff}
-input.invalid{border-color:var(--red);background:#fff}
-.turma-hint{margin-top:6px;font-size:12px;min-height:18px;display:flex;align-items:center;gap:6px}
-.turma-info-box{background:var(--gl);border:1px solid #6ee7b7;border-radius:8px;padding:8px 12px;margin-top:6px;display:none;font-size:13px;color:#065f46}
-.turma-info-box.show{display:block}
-.turma-info-box b{font-weight:700}
+/* CARÔMETRO GRID */
+.section-hdr{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:2px solid var(--gl)}
+.section-curso{font-size:12px;font-weight:800;background:var(--g);color:#fff;padding:4px 12px;border-radius:50px;letter-spacing:.02em}
+.section-cnt{font-size:13px;color:var(--mu)}
 
-/* submit */
-.submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;box-shadow:0 6px 20px rgba(29,158,117,.3);letter-spacing:-.2px}
-.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(29,158,117,.4)}
-.submit-btn:active{transform:translateY(0)}
-.submit-btn:disabled{background:#94a3b8;box-shadow:none;transform:none;cursor:not-allowed}
+.carometro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.875rem;margin-bottom:2rem}
 
-/* status */
-.status{margin-top:.875rem;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:600;display:none;align-items:center;gap:10px}
-.status.show{display:flex}
-.status.ok{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
-.status.er{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
-.status.ld{background:#f1f5f9;color:var(--mu);border:1px solid var(--bd)}
-.status.dup{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
-.spin{width:18px;height:18px;flex-shrink:0;border:2.5px solid rgba(0,0,0,.1);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
+.carom-card{background:var(--cd);border-radius:12px;overflow:hidden;border:1px solid var(--bd);box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .22s;position:relative}
+.carom-card:hover{box-shadow:0 12px 28px rgba(0,0,0,.1);transform:translateY(-3px)}
+.carom-foto-wrap{position:relative;height:180px;background:#f1f5f9;overflow:hidden;cursor:zoom-in}
+.carom-foto-wrap img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform .3s}
+.carom-card:hover .carom-foto-wrap img{transform:scale(1.06)}
+.carom-foto-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;background:linear-gradient(135deg,#f1f5f9,#e2e8f0)}
+.carom-zoom{position:absolute;inset:0;background:rgba(15,23,42,0);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.carom-zoom svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;opacity:0;transition:opacity .2s;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.carom-foto-wrap:hover .carom-zoom{background:rgba(15,23,42,.3)}
+.carom-foto-wrap:hover .carom-zoom svg{opacity:1}
+.turno-pill{position:absolute;top:8px;left:8px;background:rgba(15,23,42,.7);backdrop-filter:blur(4px);color:#fff;font-size:9px;font-weight:700;padding:3px 8px;border-radius:50px;letter-spacing:.04em}
+.carom-body{padding:.875rem}
+.carom-nome{font-size:13px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.2px}
+.carom-turma{font-size:11px;color:var(--mu);margin-bottom:2px}
+.carom-data{font-size:10px;color:#94a3b8}
+.carom-del{width:100%;padding:7px;background:none;border:none;border-top:1px solid var(--bd);color:#94a3b8;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;font-family:'Sora',sans-serif}
+.carom-del svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.carom-del:hover{background:var(--redl);color:var(--red)}
+
+/* TURMAS PAGE */
+.turmas-layout{display:grid;grid-template-columns:360px 1fr;gap:1.5rem;align-items:start}
+.form-card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;box-shadow:0 1px 3px rgba(0,0,0,.06);position:sticky;top:80px}
+.form-card h3{font-size:16px;font-weight:800;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;letter-spacing:-.3px}
+.form-card h3 svg{width:20px;height:20px;stroke:var(--g);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.form-field{margin-bottom:1.1rem}
+.form-field label{display:block;font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.form-field input,.form-field select{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:14px;font-family:'Sora',sans-serif;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
+.form-field input:focus,.form-field select:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1);background:#fff}
+.criar-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;box-shadow:0 4px 14px rgba(29,158,117,.3);display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:-.2px}
+.criar-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(29,158,117,.4)}
+.criar-btn:disabled{background:#94a3b8;box-shadow:none;transform:none;cursor:not-allowed}
+
+.turmas-list-card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.tlc-hdr{padding:1rem 1.25rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.tlc-hdr h3{font-size:15px;font-weight:800;letter-spacing:-.3px}
+.cnt-badge{background:#f1f5f9;color:var(--mu);font-size:12px;font-weight:700;padding:3px 12px;border-radius:50px}
+
+.t-row{display:flex;align-items:center;padding:1rem 1.25rem;border-bottom:1px solid var(--bd);gap:1rem;transition:background .15s}
+.t-row:last-child{border-bottom:none}
+.t-row:hover{background:#fafafa}
+.t-icon{width:42px;height:42px;background:var(--gl);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.t-icon svg{width:20px;height:20px;stroke:var(--g);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.t-info{flex:1;min-width:0}
+.t-id{font-size:14px;font-weight:800;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t-chips{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.tc{font-size:10px;font-weight:700;padding:2px 9px;border-radius:50px}
+.tc-curso{background:#eff6ff;color:#1d4ed8}
+.tc-turno{background:#fef3c7;color:#92400e}
+.t-actions{display:flex;gap:.5rem;flex-shrink:0}
+.t-view-btn{padding:6px 14px;background:var(--gl);border:1px solid #6ee7b7;border-radius:7px;font-size:12px;font-weight:700;color:var(--g);cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;text-decoration:none;display:inline-flex;align-items:center}
+.t-view-btn:hover{background:var(--g);color:#fff;border-color:var(--g)}
+.t-del-btn{width:34px;height:34px;background:none;border:1.5px solid var(--bd);border-radius:8px;color:#94a3b8;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.t-del-btn:hover{background:var(--redl);border-color:#fecaca;color:var(--red)}
+.t-del-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.no-turmas{padding:3rem;text-align:center;font-size:14px;color:var(--mu)}
+
+/* empty */
+.empty-view{text-align:center;padding:5rem 1rem;color:var(--mu)}
+.empty-view .eicon{font-size:64px;margin-bottom:1rem;opacity:.4}
+.empty-view h3{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--tx)}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:200;flex-direction:column;gap:1rem;padding:1rem}
+.lightbox.show{display:flex}
+.lb-img{max-width:min(440px,90vw);max-height:65vh;border-radius:16px;object-fit:cover;box-shadow:0 32px 64px rgba(0,0,0,.6)}
+.lb-card{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:1rem 2rem;color:#fff;text-align:center;min-width:280px}
+.lb-nome{font-size:20px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
+.lb-meta{font-size:13px;color:rgba(255,255,255,.6)}
+.lb-close{position:fixed;top:1.25rem;right:1.25rem;width:44px;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:50%;color:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;font-family:sans-serif}
+.lb-close:hover{background:rgba(255,255,255,.2)}
+
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:180;padding:1rem}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:20px;padding:2.25rem;max-width:400px;width:100%;box-shadow:0 32px 64px rgba(0,0,0,.25)}
+.modal-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;background:#fef2f2}
+.modal-icon svg{width:28px;height:28px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.modal h3{font-size:20px;font-weight:800;margin-bottom:.5rem;letter-spacing:-.4px}
+.modal p{font-size:14px;color:var(--mu);line-height:1.6;margin-bottom:1.5rem}
+.modal-btns{display:flex;gap:.75rem}
+.modal-btns button{flex:1;padding:13px;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;border:none;transition:all .15s;font-family:'Sora',sans-serif}
+.btn-cancel{background:#f1f5f9;color:var(--tx)}.btn-cancel:hover{background:#e2e8f0}
+.btn-del{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(239,68,68,.3)}.btn-del:hover{background:#b91c1c}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.15);transform:translateY(100px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);z-index:300;display:flex;align-items:center;gap:10px;max-width:340px;font-family:'Sora',sans-serif;background:#fff;border:1px solid var(--bd)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-color:#6ee7b7;color:#065f46}
+.toast.er{border-color:#fca5a5;color:#991b1b}
+.t-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.toast.ok .t-icon{background:#d1fae5}
+.toast.er .t-icon{background:#fee2e2}
+
+.spin{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+.spin-g{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(0,0,0,.1);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* sucesso */
-#successView{display:none;text-align:center;padding:2rem 1rem}
-#successView.show{display:block}
-.success-circle{width:88px;height:88px;background:linear-gradient(135deg,var(--g),var(--gd));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(29,158,117,.4)}
-.success-circle svg{width:44px;height:44px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-#successView h2{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.5px}
-#successView p{font-size:15px;color:var(--mu);line-height:1.6;margin-bottom:1.5rem}
-.success-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.stag{padding:6px 16px;border-radius:50px;font-size:13px;font-weight:700;background:var(--gl);color:#065f46}
-
-.ftr{text-align:center;margin-top:1.5rem;font-size:12px;color:#94a3b8}
-.ftr a{color:#94a3b8;text-decoration:none;padding:4px 12px;border:1px solid var(--bd);border-radius:20px}
-.ftr a:hover{color:var(--mu)}
+@media(max-width:1024px){.turmas-layout{grid-template-columns:1fr}.form-card{position:static}}
+@media(max-width:768px){.filters-grid{grid-template-columns:1fr 1fr}.tb-stat{display:none}.carometro-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+@media(max-width:480px){.filters-grid{grid-template-columns:1fr}.carometro-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
 </style>
 </head>
 <body>
-<div class="container">
 
-  <div class="header">
-    <div class="brand"><span class="brand-dot"></span>CARÔMETRO DIGITAL</div>
-    <h1>Cadastro de aluno</h1>
-    <p class="sub">Registre seu nome e foto para sua turma</p>
+<!-- LOGIN -->
+<div id="loginView">
+  <div class="login-card">
+    <div class="login-logo-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <h1>Coordenação</h1>
+    <p>Painel pedagógico — acesso restrito</p>
+    <div class="fg">
+      <label>Senha</label>
+      <input type="password" id="senhaInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/>
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="login()">Acessar painel</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- PAINEL -->
+<div id="painelView">
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="tb-brand">
+      <div class="tb-logo"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div><div class="tb-name">Carômetro Digital</div><div class="tb-sub">Coordenação Pedagógica</div></div>
+    </div>
+    <div class="tb-right">
+      <div class="tb-stat">Alunos: <b id="stTotal">—</b></div>
+      <div class="tb-stat">Cursos: <b id="stCursos">—</b></div>
+      <div class="tb-stat">Turmas: <b id="stTurmas">—</b></div>
+      <button class="tb-logout" onclick="logout()">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sair
+      </button>
+    </div>
+  </nav>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tabs-inner">
+      <button class="tab-btn active" id="tabA" onclick="switchTab('alunos')">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Carômetro
+      </button>
+      <button class="tab-btn" id="tabT" onclick="switchTab('turmas')">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Turmas
+      </button>
+    </div>
   </div>
 
-  <div id="formView">
-    <div class="card">
-      <!-- FOTO -->
-      <div class="foto-section">
-        <span class="foto-label">Sua foto</span>
-        <div class="foto-tabs">
-          <button class="foto-tab active" onclick="switchFotoTab('camera')">📸 Selfie</button>
-          <button class="foto-tab" onclick="switchFotoTab('upload')">🖼️ Arquivo</button>
-        </div>
+  <!-- PAGE ALUNOS -->
+  <div class="page active" id="pageAlunos">
+    <div class="stats-row">
+      <div class="stat-card accent"><div class="stat-lbl">Total de alunos</div><div class="stat-val" id="svTotal">—</div></div>
+      <div class="stat-card"><div class="stat-lbl">Cursos</div><div class="stat-val" id="svCursos">—</div></div>
+      <div class="stat-card"><div class="stat-lbl">Turmas</div><div class="stat-val" id="svTurmas">—</div></div>
+    </div>
 
-        <!-- CÂMERA -->
-        <div id="cameraPanel">
-          <div class="camera-area" id="cameraArea">
-            <div class="cam-overlay" id="camOverlay">
-              <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-              <button class="cam-btn" onclick="iniciarCamera()">Ativar câmera</button>
-            </div>
-            <video id="video" autoplay playsinline style="display:none"></video>
-            <canvas id="canvas"></canvas>
-          </div>
-          <div class="cam-controls" id="camControls" style="display:none">
-            <button class="cam-btn" onclick="tirarFoto()" style="background:var(--g)">📸 Tirar foto</button>
-            <button class="cam-btn" onclick="pararCamera()" style="background:#475569">Cancelar</button>
-          </div>
-          <div class="foto-preview" id="fotoPreview">
-            <img id="fotoPreviewImg" src="" alt="Prévia"/>
-            <div class="foto-preview-actions">
-              <button class="btn-retirar" onclick="descartarFoto()">↩ Tirar de novo</button>
-              <button class="btn-usar" onclick="usarFoto()">✓ Usar esta foto</button>
-            </div>
-          </div>
+    <div class="filters">
+      <div class="filters-grid">
+        <div class="fg2"><label>Buscar por nome</label><input type="text" id="fNome" placeholder="Nome do aluno..." oninput="filtrar()"/></div>
+        <div class="fg2"><label>ID da turma</label><input type="text" id="fTurma" placeholder="ID da turma" oninput="filtrar()"/></div>
+        <div class="fg2"><label>Curso</label><select id="fCurso" onchange="filtrar()"><option value="">Todos</option></select></div>
+        <div class="fg2"><label>Turno</label>
+          <select id="fTurno" onchange="filtrar()">
+            <option value="">Todos</option><option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>EAD</option>
+          </select>
         </div>
-
-        <!-- UPLOAD -->
-        <div id="uploadPanel" style="display:none">
-          <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
-            <div id="uploadPlaceholder">
-              <div class="upload-icon">📁</div>
-              <div class="upload-txt">Clique para selecionar</div>
-              <div class="upload-hint">JPG ou PNG — máx. 5 MB</div>
-            </div>
-            <img id="uploadPreview" src="" alt="Prévia" style="display:none"/>
-          </div>
-          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="carregarUpload(this)"/>
-          <button class="rm-foto" id="rmUpload" style="display:none" onclick="rmUploadFoto()">✕ Remover foto</button>
-        </div>
-      </div>
-
-      <!-- CAMPOS -->
-      <div class="field">
-        <label for="nome">Nome completo</label>
-        <input type="text" id="nome" placeholder="Digite seu nome completo" maxlength="120" autocomplete="name"/>
-      </div>
-      <div class="field">
-        <label for="idTurma">ID da turma</label>
-        <input type="text" id="idTurma" placeholder="Informe o ID da sua turma" maxlength="50" oninput="validarTurma()"/>
-        <div class="turma-hint" id="turmaHint"></div>
-        <div class="turma-info-box" id="turmaInfoBox">
-          Turma encontrada: <b id="tCurso"></b> — <b id="tTurno"></b>
-        </div>
+        <div class="fg2"><label>&nbsp;</label><button class="clr-btn" onclick="limparFiltros()">✕ Limpar</button></div>
       </div>
     </div>
 
-    <button class="submit-btn" id="btnEnviar" onclick="enviar()">Registrar no carômetro</button>
-    <div class="status" id="statusBox" role="alert"><span id="statusIcon"></span><span id="statusMsg"></span></div>
-    <div class="ftr"><a href="admin.html">⚙ Coordenação</a></div>
+    <div id="alunosContent">
+      <div class="empty-view"><div class="eicon">⏳</div><h3>Carregando...</h3></div>
+    </div>
   </div>
 
-  <div id="successView">
-    <div class="card">
-      <div class="success-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-      <h2>Cadastrado!</h2>
-      <p>Sua foto foi registrada no carômetro da turma com sucesso.</p>
-      <div class="success-tags">
-        <span class="stag" id="sTagCurso"></span>
-        <span class="stag" id="sTagTurno"></span>
+  <!-- PAGE TURMAS -->
+  <div class="page" id="pageTurmas">
+    <div class="turmas-layout">
+      <div class="form-card">
+        <h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Nova turma</h3>
+        <div class="form-field"><label>ID da turma</label><input type="text" id="ntId" placeholder="Ex: 2025-MEC-01" maxlength="50"/></div>
+        <div class="form-field"><label>Curso</label><input type="text" id="ntCurso" placeholder="Ex: Técnico Mecatrônica" maxlength="50"/></div>
+        <div class="form-field">
+          <label>Turno</label>
+          <select id="ntTurno"><option value="">Selecione</option><option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>EAD</option></select>
+        </div>
+        <button class="criar-btn" id="btnCriar" onclick="criarTurma()">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Criar turma
+        </button>
+      </div>
+
+      <div class="turmas-list-card">
+        <div class="tlc-hdr"><h3>Turmas cadastradas</h3><span class="cnt-badge" id="turmaCnt">0</span></div>
+        <div id="turmasList"><div class="no-turmas">Carregando...</div></div>
       </div>
     </div>
   </div>
 
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="fecharLB()">✕</button>
+  <img class="lb-img" id="lbImg" src="" alt="Foto"/>
+  <div class="lb-card"><div class="lb-nome" id="lbNome"></div><div class="lb-meta" id="lbMeta"></div></div>
+</div>
+
+<!-- MODAL ALUNO -->
+<div class="overlay" id="ovAluno">
+  <div class="modal">
+    <div class="modal-icon"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></div>
+    <h3>Excluir aluno?</h3><p id="mAlunoMsg"></p>
+    <div class="modal-btns"><button class="btn-cancel" onclick="fecharOvAluno()">Cancelar</button><button class="btn-del" onclick="confirmarDelAluno()">Excluir</button></div>
+  </div>
+</div>
+
+<!-- MODAL TURMA -->
+<div class="overlay" id="ovTurma">
+  <div class="modal">
+    <div class="modal-icon"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></div>
+    <h3>Remover turma?</h3><p id="mTurmaMsg"></p>
+    <div class="modal-btns"><button class="btn-cancel" onclick="fecharOvTurma()">Cancelar</button><button class="btn-del" onclick="confirmarDelTurma()">Remover</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="t-icon" id="tIcon"></span><span id="tMsg"></span></div>
+
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZim1Qb7_sZVRMhefpEbhV4ecbwVqtDertJVAxiwIohtns9Nrg884oRZffb8_0UEkDUg/exec';
-let foto64 = '';
-let stream = null;
-let fotoCapturada = null;
-let turmasCache = [];
-let turmaAtual = null;
-let validarTimer = null;
+const BASE = 'https://script.google.com/macros/s/AKfycbxZim1Qb7_sZVRMhefpEbhV4ecbwVqtDertJVAxiwIohtns9Nrg884oRZffb8_0UEkDUg/exec';
+let senha='', todosAlunos=[], todasTurmas=[], pendAluno=null, pendTurma=null;
 
-// Carrega turmas ao abrir
-(async()=>{
-  try {
-    const r = await api({ acao:'listarTurmas' });
-    if (r.status==='ok') turmasCache = r.turmas||[];
-  } catch(_){}
-})();
-
+// Formulário do aluno usa POST; admin usa GET (evita CORS do domínio senai.br)
 function api(body){
-  return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  // Cadastrar sempre via POST (tem foto em base64 — muito grande para GET)
+  if(body.acao==='cadastrar'||body.acao==='listarTurmas'){
+    return fetch(BASE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  }
+  // Demais ações admin via GET (sem bloqueio de CORS)
+  const params = Object.entries(body)
+    .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v!==null&&v!==undefined?v:'')}`)
+    .join('&');
+  return fetch(`${BASE}?${params}`,{method:'GET'}).then(r=>r.json());
 }
 
-// ── FOTO TABS ──
-function switchFotoTab(tab) {
-  document.querySelectorAll('.foto-tab').forEach((t,i)=>t.classList.toggle('active',(i===0)===(tab==='camera')));
-  document.getElementById('cameraPanel').style.display = tab==='camera'?'block':'none';
-  document.getElementById('uploadPanel').style.display = tab==='upload'?'block':'none';
-  if (tab!=='camera') pararCamera();
-  if (tab!=='upload') rmUploadFoto();
-  if (tab==='camera' || tab==='upload') { foto64=''; fotoCapturada=null; }
-}
-
-// ── CÂMERA ──
-async function iniciarCamera(){
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
-    const v = document.getElementById('video');
-    v.srcObject = stream; v.style.display='block';
-    document.getElementById('camOverlay').style.display='none';
-    document.getElementById('camControls').style.display='flex';
-  } catch(_){ setStatus('er','Câmera não disponível. Use a opção Arquivo.'); }
-}
-
-function tirarFoto(){
-  const v = document.getElementById('video');
-  const c = document.getElementById('canvas');
-  c.width=v.videoWidth; c.height=v.videoHeight;
-  c.getContext('2d').drawImage(v,0,0);
-  fotoCapturada = c.toDataURL('image/jpeg',0.85);
-  pararCamera();
-  const prev = document.getElementById('fotoPreview');
-  document.getElementById('fotoPreviewImg').src = fotoCapturada;
-  prev.style.display='block';
-  document.getElementById('cameraArea').style.display='none';
-  document.getElementById('camControls').style.display='none';
-}
-
-function pararCamera(){
-  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
-  const v = document.getElementById('video');
-  v.style.display='none';
-  document.getElementById('camOverlay').style.display='flex';
-  document.getElementById('camControls').style.display='none';
-  document.getElementById('cameraArea').style.display='flex';
-}
-
-function descartarFoto(){
-  fotoCapturada=null;
-  document.getElementById('fotoPreview').style.display='none';
-  document.getElementById('cameraArea').style.display='flex';
-}
-
-function usarFoto(){
-  foto64 = fotoCapturada;
-  document.getElementById('fotoPreview').style.display='none';
-  document.getElementById('cameraArea').style.display='none';
-  document.getElementById('camControls').style.display='none';
-  // Mostra miniatura
-  const prev = document.getElementById('fotoPreview');
-  prev.style.display='block';
-  document.getElementById('fotoPreviewImg').src=foto64;
-  document.getElementById('cameraArea').style.display='none';
-}
-
-// ── UPLOAD ──
-function carregarUpload(input){
-  const f = input.files[0]; if(!f) return;
-  if(f.size>5*1024*1024){ setStatus('er','Foto muito grande. Máximo 5 MB.'); return; }
-  const r = new FileReader();
-  r.onload = e=>{
-    foto64=e.target.result;
-    document.getElementById('uploadPreview').src=foto64;
-    document.getElementById('uploadPreview').style.display='block';
-    document.getElementById('uploadPlaceholder').style.display='none';
-    document.getElementById('uploadArea').classList.add('has-foto');
-    document.getElementById('rmUpload').style.display='inline';
-  };
-  r.readAsDataURL(f);
-}
-
-function rmUploadFoto(){
-  foto64='';
-  document.getElementById('fileInput').value='';
-  document.getElementById('uploadPreview').style.display='none';
-  document.getElementById('uploadPlaceholder').style.display='block';
-  document.getElementById('uploadArea').classList.remove('has-foto');
-  document.getElementById('rmUpload').style.display='none';
-}
-
-// ── VALIDAÇÃO TURMA ──
-function validarTurma(){
-  clearTimeout(validarTimer);
-  const val = document.getElementById('idTurma').value.trim();
-  const hint = document.getElementById('turmaHint');
-  const box  = document.getElementById('turmaInfoBox');
-  const inp  = document.getElementById('idTurma');
-  turmaAtual = null;
-  if(!val){ hint.innerHTML=''; box.classList.remove('show'); inp.className=''; return; }
-  hint.innerHTML='<span style="font-size:12px;color:var(--mu)">Verificando...</span>';
-  validarTimer = setTimeout(()=>{
-    const t = turmasCache.find(x=>x.idTurma.trim().toLowerCase()===val.toLowerCase());
-    if(t){
-      turmaAtual=t;
-      inp.className='valid';
-      hint.innerHTML='<span style="color:var(--g);font-size:13px;font-weight:700">✓ Turma encontrada</span>';
-      document.getElementById('tCurso').textContent=t.curso;
-      document.getElementById('tTurno').textContent=t.turno;
-      box.classList.add('show');
-    } else {
-      inp.className='invalid';
-      hint.innerHTML='<span style="color:var(--red);font-size:12px;font-weight:600">✗ ID não encontrado. Verifique com a coordenação.</span>';
-      box.classList.remove('show');
-    }
-  },400);
-}
-
-// ── STATUS ──
-function setStatus(tipo,msg){
-  const b=document.getElementById('statusBox'),i=document.getElementById('statusIcon');
-  b.className='status show '+tipo;
-  i.innerHTML=tipo==='ld'?'<div class="spin"></div>':tipo==='ok'?'✅':tipo==='dup'?'⚠️':'❌';
-  document.getElementById('statusMsg').textContent=msg;
-}
-
-// ── ENVIAR ──
-async function enviar(){
-  const nome    = document.getElementById('nome').value.trim();
-  const idTurma = document.getElementById('idTurma').value.trim();
-  if(!foto64)   { setStatus('er','Adicione sua foto (selfie ou arquivo).'); return; }
-  if(!nome)     { setStatus('er','Informe seu nome completo.'); return; }
-  if(!turmaAtual){ setStatus('er','ID de turma inválido. Verifique com a coordenação.'); return; }
-  const btn = document.getElementById('btnEnviar');
-  btn.disabled=true; setStatus('ld','Registrando no carômetro...');
+// LOGIN
+async function login(){
+  const s=document.getElementById('senhaInput').value; if(!s) return;
+  const btn=document.getElementById('loginBtn');
+  btn.innerHTML='<span class="spin"></span> Verificando...'; btn.disabled=true;
   try{
-    const r = await api({ acao:'cadastrar', idTurma, nome, foto:foto64 });
-    if(r.status==='ok'){
-      document.getElementById('sTagCurso').textContent='📚 '+r.curso;
-      document.getElementById('sTagTurno').textContent='🕐 '+r.turno;
-      document.getElementById('formView').style.display='none';
-      document.getElementById('successView').classList.add('show');
-    } else if(r.status==='duplicata'){
-      setStatus('dup',r.msg); btn.disabled=false;
+    const r=await api({acao:'buscar',senha:s,query:''});
+    if(r.status==='erro'){
+      document.getElementById('loginErr').textContent=r.msg;
+      document.getElementById('loginErr').classList.add('show');
+      btn.textContent='Acessar painel'; btn.disabled=false;
     } else {
-      setStatus('er',r.msg||'Erro ao cadastrar.'); btn.disabled=false;
+      senha=s;
+      document.getElementById('loginView').style.display='none';
+      document.getElementById('painelView').classList.add('show');
+      todosAlunos=r.dados||[];
+      atualizarStats(); popularFiltros(); renderAlunos(todosAlunos);
+      carregarTurmas();
     }
-  } catch(e){ setStatus('er','Falha na conexão. Tente novamente.'); btn.disabled=false; }
+  } catch(e){
+    document.getElementById('loginErr').textContent='Erro de conexão: '+e.message;
+    document.getElementById('loginErr').classList.add('show');
+    btn.textContent='Acessar painel'; btn.disabled=false;
+  }
 }
+
+function logout(){
+  senha=''; todosAlunos=[]; todasTurmas=[];
+  document.getElementById('loginView').style.display='flex';
+  document.getElementById('painelView').classList.remove('show');
+  document.getElementById('senhaInput').value='';
+  document.getElementById('loginErr').classList.remove('show');
+  document.getElementById('loginBtn').textContent='Acessar painel';
+  document.getElementById('loginBtn').disabled=false;
+}
+
+// TABS
+function switchTab(t){
+  ['tabA','tabT'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',(i===0)===(t==='alunos')));
+  ['pageAlunos','pageTurmas'].forEach((id,i)=>document.getElementById(id).classList.toggle('active',(i===0)===(t==='alunos')));
+}
+
+// STATS
+function atualizarStats(){
+  const cursos=[...new Set(todosAlunos.map(a=>a.curso).filter(Boolean))];
+  const turmas=[...new Set(todosAlunos.map(a=>a.idTurma).filter(Boolean))];
+  ['stTotal','svTotal'].forEach(id=>document.getElementById(id).textContent=todosAlunos.length);
+  ['stCursos','svCursos'].forEach(id=>document.getElementById(id).textContent=cursos.length);
+  ['stTurmas','svTurmas'].forEach(id=>document.getElementById(id).textContent=turmas.length);
+}
+
+// TURMAS
+async function carregarTurmas(){
+  const r=await api({acao:'listarTurmas'}).catch(()=>({status:'ok',turmas:[]}));
+  todasTurmas=r.turmas||[];
+  renderTurmas();
+}
+
+function renderTurmas(){
+  document.getElementById('turmaCnt').textContent=todasTurmas.length;
+  const el=document.getElementById('turmasList');
+  if(!todasTurmas.length){el.innerHTML='<div class="no-turmas">Nenhuma turma cadastrada ainda.</div>';return;}
+  el.innerHTML=todasTurmas.map(t=>`
+    <div class="t-row">
+      <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="t-info">
+        <div class="t-id">${esc(t.idTurma)}</div>
+        <div class="t-chips">
+          <span class="tc tc-curso">${esc(t.curso)}</span>
+          <span class="tc tc-turno">${esc(t.turno)}</span>
+        </div>
+      </div>
+      <div class="t-actions">
+        <a class="t-view-btn" href="carometro.html" target="_blank">👁 Ver</a>
+        <button class="t-del-btn" onclick='abrirOvTurma(${JSON.stringify(t)})'>
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        </button>
+      </div>
+    </div>`).join('');
+}
+
+async function criarTurma(){
+  const idTurma=document.getElementById('ntId').value.trim();
+  const curso=document.getElementById('ntCurso').value.trim();
+  const turno=document.getElementById('ntTurno').value;
+  if(!idTurma||!curso||!turno){toast('er','Preencha todos os campos.');return;}
+  const btn=document.getElementById('btnCriar');
+  btn.innerHTML='<span class="spin"></span> Criando...'; btn.disabled=true;
+  try{
+    const r=await api({acao:'criarTurma',senha,idTurma,curso,turno});
+    if(r.status==='ok'){
+      toast('ok',r.msg);
+      document.getElementById('ntId').value='';
+      document.getElementById('ntCurso').value='';
+      document.getElementById('ntTurno').selectedIndex=0;
+      await carregarTurmas();
+    } else toast('er',r.msg);
+  } catch{toast('er','Falha na conexão.');}
+  btn.innerHTML='<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Criar turma';
+  btn.disabled=false;
+}
+
+function abrirOvTurma(t){pendTurma=t;document.getElementById('mTurmaMsg').textContent=`A turma "${t.idTurma}" (${t.curso} — ${t.turno}) será removida do controle. Alunos permanecem na planilha.`;document.getElementById('ovTurma').classList.add('show');}
+function fecharOvTurma(){document.getElementById('ovTurma').classList.remove('show');pendTurma=null;}
+async function confirmarDelTurma(){
+  if(!pendTurma) return; const t=pendTurma; fecharOvTurma();
+  const r=await api({acao:'excluirTurma',senha,idTurma:t.idTurma}).catch(()=>({status:'erro',msg:'Falha.'}));
+  if(r.status==='ok'){toast('ok',r.msg);await carregarTurmas();}else toast('er',r.msg);
+}
+
+// FILTROS
+function popularFiltros(){
+  const cursos=[...new Set(todosAlunos.map(a=>a.curso).filter(Boolean))].sort();
+  const sel=document.getElementById('fCurso');
+  sel.innerHTML='<option value="">Todos</option>';
+  cursos.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+}
+function filtrar(){
+  const nome=document.getElementById('fNome').value.toLowerCase().trim();
+  const turma=document.getElementById('fTurma').value.toLowerCase().trim();
+  const curso=document.getElementById('fCurso').value;
+  const turno=document.getElementById('fTurno').value;
+  renderAlunos(todosAlunos.filter(a=>
+    (!nome||(a.nome||'').toLowerCase().includes(nome))&&
+    (!turma||(a.idTurma||'').toLowerCase().includes(turma))&&
+    (!curso||a.curso===curso)&&
+    (!turno||a.turno===turno)
+  ));
+}
+function limparFiltros(){
+  ['fNome','fTurma'].forEach(id=>document.getElementById(id).value='');
+  ['fCurso','fTurno'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  renderAlunos(todosAlunos);
+}
+
+// RENDER ALUNOS
+function renderAlunos(lista){
+  const el=document.getElementById('alunosContent');
+  if(!lista.length){el.innerHTML='<div class="empty-view"><div class="eicon">🔍</div><h3>Nenhum aluno encontrado</h3><p style="color:var(--mu)">Ajuste os filtros de busca.</p></div>';return;}
+  const cursos=[...new Set(lista.map(a=>a.curso||'Sem curso'))].sort();
+  let html='';
+  cursos.forEach(curso=>{
+    const g=lista.filter(a=>(a.curso||'Sem curso')===curso);
+    html+=`<div>
+      <div class="section-hdr"><span class="section-curso">${esc(curso)}</span><span class="section-cnt">${g.length} aluno${g.length!==1?'s':''}</span></div>
+      <div class="carometro-grid">`;
+    g.forEach(a=>{
+      const temFoto=a.linkFoto?.startsWith('http');
+      const aJ=JSON.stringify(a).replace(/'/g,"&#39;");
+      html+=`<div class="carom-card">
+        <div class="carom-foto-wrap" onclick='abrirLB(${aJ})'>
+          ${temFoto
+            ?`<img src="${esc(a.linkFoto)}" alt="${esc(a.nome)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+              <div class="carom-foto-ph" style="display:none">👤</div>`
+            :`<div class="carom-foto-ph">👤</div>`}
+          <span class="turno-pill">${esc(a.turno||'—')}</span>
+          <div class="carom-zoom"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        </div>
+        <div class="carom-body">
+          <div class="carom-nome" title="${esc(a.nome)}">${esc(a.nome)}</div>
+          <div class="carom-turma">🪪 ${esc(a.idTurma)}</div>
+          <div class="carom-data">📅 ${esc(a.data)}</div>
+        </div>
+        <button class="carom-del" onclick='abrirOvAluno(${aJ})'>
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+          Excluir
+        </button>
+      </div>`;
+    });
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+// LIGHTBOX
+function abrirLB(a){if(!a.linkFoto?.startsWith('http'))return;document.getElementById('lbImg').src=a.linkFoto;document.getElementById('lbNome').textContent=a.nome;document.getElementById('lbMeta').textContent=`${a.curso} · ${a.turno} · Turma ${a.idTurma}`;document.getElementById('lightbox').classList.add('show');}
+function fecharLB(){document.getElementById('lightbox').classList.remove('show');}
+
+// EXCLUIR ALUNO
+function abrirOvAluno(a){pendAluno=a;document.getElementById('mAlunoMsg').textContent=`"${a.nome}" (Turma: ${a.idTurma}) será removido permanentemente. O aluno poderá se cadastrar novamente.`;document.getElementById('ovAluno').classList.add('show');}
+function fecharOvAluno(){document.getElementById('ovAluno').classList.remove('show');pendAluno=null;}
+async function confirmarDelAluno(){
+  if(!pendAluno) return; const a=pendAluno; fecharOvAluno();
+  const r=await api({acao:'excluirAluno',senha,curso:a.curso,linhaIdx:a.linhaIdx}).catch(()=>({status:'erro',msg:'Falha.'}));
+  if(r.status==='ok'){todosAlunos=todosAlunos.filter(x=>!(x.curso===a.curso&&x.linhaIdx===a.linhaIdx));atualizarStats();popularFiltros();filtrar();toast('ok',`${a.nome} removido.`);}
+  else toast('er',r.msg);
+}
+
+// TOAST
+let tTimer;
+function toast(tipo,msg){
+  const el=document.getElementById('toast');
+  document.getElementById('tIcon').textContent=tipo==='ok'?'✅':'❌';
+  document.getElementById('tMsg').textContent=msg;
+  el.className='toast show '+tipo;
+  clearTimeout(tTimer); tTimer=setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+['ovAluno','ovTurma'].forEach(id=>document.getElementById(id).addEventListener('click',e=>{if(e.target===document.getElementById(id))document.getElementById(id).classList.remove('show');}));
+document.getElementById('lightbox').addEventListener('click',e=>{if(e.target===document.getElementById('lightbox'))fecharLB();});
 </script>
 </body>
 </html>
