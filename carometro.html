@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Carômetro Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#1D9E75;--gd:#0a6e4f;--gl:#e8f8f2;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--bg:#f0f4f8;--cd:#fff}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#0a4a30 100%);padding:0;position:sticky;top:0;z-index:50;box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.header-inner{max-width:1400px;margin:0 auto;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.header-brand{display:flex;align-items:center;gap:12px}
+.header-logo{width:42px;height:42px;background:var(--g);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.header-logo svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.header-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.header-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+.header-meta{text-align:right}
+.header-turma{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.5px}
+.header-info{font-size:13px;color:#94a3b8;margin-top:2px}
+.header-badges{display:flex;gap:6px;margin-top:6px;justify-content:flex-end;flex-wrap:wrap}
+.badge{padding:3px 12px;border-radius:50px;font-size:11px;font-weight:700}
+.badge-curso{background:#1D9E75;color:#fff}
+.badge-turno{background:rgba(255,255,255,.1);color:#e2e8f0;border:1px solid rgba(255,255,255,.15)}
+.badge-total{background:rgba(255,255,255,.08);color:#94a3b8;border:1px solid rgba(255,255,255,.1)}
+
+/* BUSCA */
+.search-bar{background:#fff;border-bottom:1px solid var(--bd);padding:.75rem 1.5rem}
+.search-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;gap:.75rem}
+.search-input{flex:1;max-width:400px;padding:9px 14px 9px 38px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;font-family:'Sora',sans-serif;color:var(--tx);outline:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center,#fafafa;transition:all .18s}
+.search-input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1);background-color:#fff}
+.search-count{font-size:13px;color:var(--mu);margin-left:auto}
+
+/* GRID */
+.main{max-width:1400px;margin:0 auto;padding:1.5rem}
+
+.alunos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}
+
+.aluno-card{background:var(--cd);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid var(--bd);transition:all .2s;cursor:default;display:flex;align-items:center;gap:.875rem;padding:.875rem}
+.aluno-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
+
+.aluno-foto{width:64px;height:64px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--bd);background:#f1f5f9}
+.aluno-foto-ph{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#e2e8f0,#cbd5e1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px;border:2px solid var(--bd)}
+.aluno-body{flex:1;min-width:0}
+.aluno-nome{font-size:13px;font-weight:700;color:var(--tx);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aluno-turma{font-size:11px;color:var(--mu);margin-top:2px}
+.aluno-data{font-size:10px;color:#94a3b8;margin-top:3px}
+
+/* estados */
+.loading-state,.empty-state,.select-state{text-align:center;padding:5rem 1rem}
+.loading-state .spinner{width:44px;height:44px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+.empty-state .icon,.select-state .icon{font-size:64px;margin-bottom:1rem;opacity:.4}
+.empty-state h3,.select-state h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.empty-state p,.select-state p{font-size:14px;color:var(--mu)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* SELETOR DE TURMA */
+.turma-selector{max-width:1400px;margin:0 auto;padding:1.5rem 1.5rem 0}
+.turma-selector h3{font-size:13px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem}
+.turma-pills{display:flex;gap:.5rem;flex-wrap:wrap}
+.turma-pill{padding:7px 16px;background:var(--cd);border:1.5px solid var(--bd);border-radius:50px;font-size:13px;font-weight:700;color:var(--mu);cursor:pointer;transition:all .18s;font-family:'Sora',sans-serif}
+.turma-pill:hover{border-color:var(--g);color:var(--g)}
+.turma-pill.active{background:var(--g);border-color:var(--g);color:#fff}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:200;padding:1rem;flex-direction:column;gap:1rem;animation:fadeIn .2s ease}
+.lightbox.show{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lightbox img{max-width:min(400px,90vw);max-height:60vh;border-radius:16px;object-fit:cover;box-shadow:0 25px 60px rgba(0,0,0,.6)}
+.lb-info{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:1rem 1.5rem;color:#fff;text-align:center;min-width:260px}
+.lb-nome{font-size:20px;font-weight:800;margin-bottom:4px;letter-spacing:-.3px}
+.lb-meta{font-size:13px;color:rgba(255,255,255,.65)}
+.lb-close{position:fixed;top:1.25rem;right:1.25rem;width:42px;height:42px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;font-family:sans-serif}
+.lb-close:hover{background:rgba(255,255,255,.2)}
+
+.ftr{text-align:center;padding:2rem;font-size:12px;color:#94a3b8}
+.ftr a{color:var(--g);text-decoration:none;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div><div class="header-title">Carômetro Digital</div><div class="header-sub">Visualização de turmas</div></div>
+    </div>
+    <div class="header-meta" id="headerMeta" style="display:none">
+      <div class="header-turma" id="headerTurma"></div>
+      <div class="header-info" id="headerInfo"></div>
+      <div class="header-badges" id="headerBadges"></div>
+    </div>
+  </div>
+</div>
+
+<div class="turma-selector" id="turmaSelector">
+  <h3>Selecione a turma</h3>
+  <div class="turma-pills" id="turmaPills">
+    <span style="font-size:14px;color:var(--mu)">Carregando turmas...</span>
+  </div>
+</div>
+
+<div class="search-bar" id="searchBar" style="display:none">
+  <div class="search-inner">
+    <input class="search-input" id="searchInput" type="text" placeholder="Buscar aluno..." oninput="filtrarAlunos()"/>
+    <span class="search-count" id="searchCount"></span>
+  </div>
+</div>
+
+<div class="main" id="mainContent">
+  <div class="select-state">
+    <div class="icon">🎓</div>
+    <h3>Selecione uma turma</h3>
+    <p>Escolha a turma acima para ver o carômetro</p>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="fecharLB()">✕</button>
+  <img id="lbImg" src="" alt="Foto"/>
+  <div class="lb-info">
+    <div class="lb-nome" id="lbNome"></div>
+    <div class="lb-meta" id="lbMeta"></div>
+  </div>
+</div>
+
+<div class="ftr">
+  <a href="index.html">+ Cadastrar-se</a> &nbsp;·&nbsp;
+  <a href="admin.html">⚙ Coordenação</a>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZim1Qb7_sZVRMhefpEbhV4ecbwVqtDertJVAxiwIohtns9Nrg884oRZffb8_0UEkDUg/exec';
+let alunosAtivos = [];
+let turmaAtiva   = null;
+
+function api(body){ return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json()); }
+
+// Carrega turmas ao abrir
+(async()=>{
+  try {
+    const r = await api({ acao:'listarTurmas' });
+    if(r.status==='ok') renderPills(r.turmas||[]);
+  } catch(_){ document.getElementById('turmaPills').innerHTML='<span style="color:#ef4444">Erro ao carregar turmas.</span>'; }
+})();
+
+function renderPills(turmas){
+  const el = document.getElementById('turmaPills');
+  if(!turmas.length){ el.innerHTML='<span style="font-size:14px;color:var(--mu)">Nenhuma turma cadastrada ainda.</span>'; return; }
+  el.innerHTML = turmas.map(t=>`
+    <button class="turma-pill" onclick="carregarTurma('${t.idTurma}')" data-id="${t.idTurma}">
+      ${t.idTurma}
+    </button>`).join('');
+}
+
+async function carregarTurma(idTurma){
+  document.querySelectorAll('.turma-pill').forEach(p=>p.classList.toggle('active',p.dataset.id===idTurma));
+  document.getElementById('mainContent').innerHTML='<div class="loading-state"><div class="spinner"></div><p style="color:var(--mu)">Carregando turma...</p></div>';
+  document.getElementById('searchBar').style.display='none';
+  document.getElementById('headerMeta').style.display='none';
+
+  try {
+    const r = await api({ acao:'carometro', idTurma });
+    if(r.status!=='ok'){ document.getElementById('mainContent').innerHTML=`<div class="empty-state"><div class="icon">⚠️</div><h3>${r.msg}</h3></div>`; return; }
+
+    turmaAtiva   = r.turma;
+    alunosAtivos = r.alunos||[];
+
+    // Header
+    document.getElementById('headerTurma').textContent = r.turma.idTurma;
+    document.getElementById('headerInfo').textContent  = r.turma.curso;
+    document.getElementById('headerBadges').innerHTML  = `
+      <span class="badge badge-curso">${r.turma.curso}</span>
+      <span class="badge badge-turno">${r.turma.turno}</span>
+      <span class="badge badge-total">${alunosAtivos.length} aluno${alunosAtivos.length!==1?'s':''}</span>`;
+    document.getElementById('headerMeta').style.display='block';
+    document.getElementById('searchBar').style.display='block';
+    document.getElementById('searchInput').value='';
+
+    renderAlunos(alunosAtivos, r.turma);
+  } catch(e){ document.getElementById('mainContent').innerHTML='<div class="empty-state"><div class="icon">❌</div><h3>Erro ao carregar</h3><p>'+e.message+'</p></div>'; }
+}
+
+function renderAlunos(lista, turma){
+  const el = document.getElementById('mainContent');
+  document.getElementById('searchCount').textContent = `${lista.length} aluno${lista.length!==1?'s':''}`;
+
+  if(!lista.length){
+    el.innerHTML='<div class="empty-state"><div class="icon">🎓</div><h3>Nenhum aluno cadastrado</h3><p>Aguardando cadastros desta turma.</p></div>';
+    return;
+  }
+
+  const t = turma || turmaAtiva;
+  el.innerHTML = `<div class="alunos-grid">${lista.map(a=>{
+    const temFoto = a.linkFoto?.startsWith('http');
+    const aJ = JSON.stringify(a).replace(/'/g,"&#39;");
+    return `<div class="aluno-card" onclick='abrirLB(${aJ})'>
+      ${temFoto
+        ? `<img class="aluno-foto" src="${esc(a.linkFoto)}" alt="${esc(a.nome)}" loading="lazy" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\\'aluno-foto-ph\\'>👤</div>')">`
+        : `<div class="aluno-foto-ph">👤</div>`}
+      <div class="aluno-body">
+        <div class="aluno-nome">${esc(a.nome)}</div>
+        <div class="aluno-turma">${esc(t?.idTurma||'')}</div>
+        <div class="aluno-data">${esc(a.data)}</div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+function filtrarAlunos(){
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const filtrados = alunosAtivos.filter(a=>(a.nome||'').toLowerCase().includes(q));
+  renderAlunos(filtrados, turmaAtiva);
+}
+
+function abrirLB(a){
+  if(!a.linkFoto?.startsWith('http')) return;
+  document.getElementById('lbImg').src=a.linkFoto;
+  document.getElementById('lbNome').textContent=a.nome;
+  document.getElementById('lbMeta').textContent=`${turmaAtiva?.idTurma||''} · ${turmaAtiva?.curso||''} · ${turmaAtiva?.turno||''}`;
+  document.getElementById('lightbox').classList.add('show');
+}
+function fecharLB(){ document.getElementById('lightbox').classList.remove('show'); }
+document.getElementById('lightbox').addEventListener('click',e=>{ if(e.target===document.getElementById('lightbox')) fecharLB(); });
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
+</body>
+</html>
