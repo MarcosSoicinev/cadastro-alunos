@@ -3,250 +3,364 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Cadastro de Aluno</title>
+<title>Cadastro — Carômetro Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#6b7280;--bd:#e5e7eb;--bg:#f3f4f6;--cd:#fff;--r:14px;--red:#dc2626}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:2.5rem 1rem 3rem}
-.wrap{max-width:500px;margin:0 auto}
-.hdr{text-align:center;margin-bottom:2rem}
-.logo{width:68px;height:68px;background:var(--g);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 6px 24px rgba(29,158,117,.28)}
-.logo svg{width:34px;height:34px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-h1{font-size:23px;font-weight:700;margin-bottom:4px}
-.sub{font-size:14px;color:var(--mu)}
-.card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);padding:1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.field{margin-bottom:1.2rem}.field:last-child{margin-bottom:0}
-label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
-label svg{width:14px;height:14px;stroke:var(--mu);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-input[type=text]{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:15px;color:var(--tx);background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s}
-input[type=text]:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
-input.valid{border-color:var(--g)!important;background:#fff}
-input.invalid{border-color:var(--red)!important;background:#fff}
+:root{
+  --g:#1D9E75;--gd:#0a6e4f;--gl:#e8f8f2;
+  --tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;
+  --bg:#f0f4f8;--cd:#fff;--r:16px;
+  --red:#ef4444;
+}
+body{font-family:'Sora',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem 1rem}
 
-/* validação turma */
-.turma-wrap{position:relative}
-.turma-status{margin-top:6px;font-size:12px;display:flex;align-items:center;gap:6px;min-height:18px}
-.turma-info{background:var(--gl);border:1px solid #5DCAA5;border-radius:8px;padding:8px 12px;margin-top:8px;display:none}
-.turma-info.show{display:block}
-.turma-info-row{font-size:13px;color:#085041;display:flex;gap:6px;align-items:center;margin-bottom:2px}
-.turma-info-row:last-child{margin-bottom:0}
-.turma-info-label{font-weight:700;min-width:48px}
-.spin-sm{width:13px;height:13px;border:2px solid #ddd;border-top-color:var(--g);border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+.container{width:100%;max-width:460px}
+
+.header{text-align:center;margin-bottom:2rem}
+.brand{display:inline-flex;align-items:center;gap:10px;background:var(--dark,#0f172a);color:#fff;padding:8px 18px;border-radius:50px;margin-bottom:1.5rem;font-size:13px;font-weight:700;letter-spacing:.05em}
+.brand-dot{width:8px;height:8px;background:var(--g);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+h1{font-size:26px;font-weight:800;color:var(--tx);letter-spacing:-.5px;margin-bottom:6px}
+.sub{font-size:14px;color:var(--mu)}
+
+.card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);padding:1.75rem;margin-bottom:1rem;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+
+/* Foto */
+.foto-section{margin-bottom:1.5rem}
+.foto-label{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem;display:block}
+.foto-tabs{display:flex;background:#f1f5f9;border-radius:10px;padding:3px;margin-bottom:1rem;gap:3px}
+.foto-tab{flex:1;padding:8px;background:transparent;border:none;border-radius:8px;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;transition:all .18s;font-family:'Sora',sans-serif}
+.foto-tab.active{background:#fff;color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+/* camera */
+.camera-area{position:relative;border-radius:12px;overflow:hidden;background:#0f172a;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+.camera-area video{width:100%;height:100%;object-fit:cover;display:block}
+.camera-area canvas{display:none}
+.cam-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;color:rgba(255,255,255,.6)}
+.cam-overlay svg{width:48px;height:48px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.cam-btn{padding:10px 24px;background:var(--g);color:#fff;border:none;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:all .18s;box-shadow:0 4px 12px rgba(29,158,117,.35)}
+.cam-btn:hover{background:var(--gd);transform:translateY(-1px)}
+.cam-controls{display:flex;gap:.75rem;margin-top:.75rem;justify-content:center}
+
+/* upload */
+.upload-area{border:2px dashed var(--bd);border-radius:12px;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;cursor:pointer;transition:all .2s;background:#fafafa;overflow:hidden;position:relative}
+.upload-area:hover{border-color:var(--g);background:var(--gl)}
+.upload-area.has-foto{border-style:solid;border-color:var(--g);padding:0}
+.upload-area img{width:100%;height:100%;object-fit:cover;display:block}
+.upload-icon{font-size:42px;color:#cbd5e1}
+.upload-txt{font-size:14px;font-weight:600;color:var(--mu)}
+.upload-hint{font-size:12px;color:#94a3b8}
+.rm-foto{font-size:12px;color:var(--red);background:none;border:none;cursor:pointer;margin-top:.5rem;font-family:'Sora',sans-serif;font-weight:600}
+
+/* preview foto capturada */
+.foto-preview{border-radius:12px;overflow:hidden;aspect-ratio:4/3;background:#f1f5f9;display:none;position:relative}
+.foto-preview img{width:100%;height:100%;object-fit:cover;display:block}
+.foto-preview-actions{display:flex;gap:.5rem;margin-top:.5rem;justify-content:center}
+.foto-preview-actions button{padding:7px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;border:none;transition:all .18s}
+.btn-retirar{background:#f1f5f9;color:var(--tx)}.btn-retirar:hover{background:#e2e8f0}
+.btn-usar{background:var(--g);color:#fff}.btn-usar:hover{background:var(--gd)}
+
+/* campos */
+.field{margin-bottom:1.25rem}.field:last-child{margin-bottom:0}
+label{display:block;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+input{width:100%;padding:12px 16px;border:1.5px solid var(--bd);border-radius:10px;font-size:15px;font-family:'Sora',sans-serif;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
+input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
+input.valid{border-color:var(--g);background:#fff}
+input.invalid{border-color:var(--red);background:#fff}
+.turma-hint{margin-top:6px;font-size:12px;min-height:18px;display:flex;align-items:center;gap:6px}
+.turma-info-box{background:var(--gl);border:1px solid #6ee7b7;border-radius:8px;padding:8px 12px;margin-top:6px;display:none;font-size:13px;color:#065f46}
+.turma-info-box.show{display:block}
+.turma-info-box b{font-weight:700}
+
+/* submit */
+.submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Sora',sans-serif;transition:all .2s;box-shadow:0 6px 20px rgba(29,158,117,.3);letter-spacing:-.2px}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(29,158,117,.4)}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn:disabled{background:#94a3b8;box-shadow:none;transform:none;cursor:not-allowed}
+
+/* status */
+.status{margin-top:.875rem;padding:12px 16px;border-radius:10px;font-size:14px;font-weight:600;display:none;align-items:center;gap:10px}
+.status.show{display:flex}
+.status.ok{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
+.status.er{background:#fee2e2;color:#991b1b;border:1px solid #fca5a5}
+.status.ld{background:#f1f5f9;color:var(--mu);border:1px solid var(--bd)}
+.status.dup{background:#fef3c7;color:#92400e;border:1px solid #fcd34d}
+.spin{width:18px;height:18px;flex-shrink:0;border:2.5px solid rgba(0,0,0,.1);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.char{font-size:11px;color:#bbb;text-align:right;margin-top:4px}
-.photo-area{border:2px dashed var(--bd);border-radius:var(--r);padding:2.2rem 1rem;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;overflow:hidden}
-.photo-area:hover{border-color:var(--g);background:var(--gl)}
-.photo-area.filled{padding:0;border-style:solid;border-color:var(--g)}
-.photo-area img{width:100%;max-height:210px;object-fit:cover;display:block;border-radius:calc(var(--r) - 2px)}
-.up-icon{font-size:38px;margin-bottom:10px}.up-txt{font-size:14px;color:var(--mu);font-weight:500}.up-hint{font-size:12px;color:#bbb;margin-top:5px}
-.rm-btn{font-size:12px;color:var(--g);background:none;border:none;cursor:pointer;margin-top:7px;padding:3px 0;display:none}
-.btn{width:100%;padding:15px;background:var(--g);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .18s,transform .1s;box-shadow:0 5px 18px rgba(29,158,117,.32)}
-.btn:hover{background:var(--gd)}.btn:active{transform:scale(.98)}.btn:disabled{background:#b0b0b0;box-shadow:none;cursor:not-allowed;transform:none}
-.status{margin-top:1rem;padding:13px 16px;border-radius:10px;font-size:14px;display:none;align-items:center;gap:12px}
-.status.show{display:flex}
-.status.ok{background:#E1F5EE;color:#085041;border:1px solid #5DCAA5}
-.status.er{background:#FEF0F0;color:#7A1F1F;border:1px solid #f7a0a0}
-.status.ld{background:#f5f5f3;color:#555;border:1px solid #ddd}
-.status.dup{background:#FAEEDA;color:#633806;border:1px solid #FAC775}
-.spin{width:18px;height:18px;flex-shrink:0;border:2.5px solid #ddd;border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
-#successView{display:none;text-align:center;padding:3rem 1rem}
+/* sucesso */
+#successView{display:none;text-align:center;padding:2rem 1rem}
 #successView.show{display:block}
-.ok-c{width:82px;height:82px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
-.ok-c svg{width:40px;height:40px;stroke:var(--g);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-#successView h2{font-size:22px;font-weight:700;margin-bottom:8px}
-#successView p{font-size:15px;color:var(--mu);line-height:1.6}
-.success-badges{display:flex;gap:8px;justify-content:center;margin-top:1rem;flex-wrap:wrap}
-.sbadge{padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--gl);color:#085041}
-.ftr{text-align:center;margin-top:2rem;font-size:12px;color:#c0c0c0}
+.success-circle{width:88px;height:88px;background:linear-gradient(135deg,var(--g),var(--gd));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(29,158,117,.4)}
+.success-circle svg{width:44px;height:44px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+#successView h2{font-size:24px;font-weight:800;margin-bottom:6px;letter-spacing:-.5px}
+#successView p{font-size:15px;color:var(--mu);line-height:1.6;margin-bottom:1.5rem}
+.success-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.stag{padding:6px 16px;border-radius:50px;font-size:13px;font-weight:700;background:var(--gl);color:#065f46}
+
+.ftr{text-align:center;margin-top:1.5rem;font-size:12px;color:#94a3b8}
+.ftr a{color:#94a3b8;text-decoration:none;padding:4px 12px;border:1px solid var(--bd);border-radius:20px}
+.ftr a:hover{color:var(--mu)}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div id="formView">
-    <div class="hdr">
-      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-      <h1>Cadastro de aluno</h1>
-      <p class="sub">Preencha todos os campos para se cadastrar</p>
-    </div>
+<div class="container">
 
+  <div class="header">
+    <div class="brand"><span class="brand-dot"></span>CARÔMETRO DIGITAL</div>
+    <h1>Cadastro de aluno</h1>
+    <p class="sub">Registre seu nome e foto para sua turma</p>
+  </div>
+
+  <div id="formView">
     <div class="card">
-      <!-- ID DA TURMA com validação -->
-      <div class="field">
-        <label><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>ID da turma</label>
-        <div class="turma-wrap">
-          <input type="text" id="idTurma" placeholder="Digite o ID da sua turma" maxlength="30" oninput="cnt(this,'ct');validarTurma()"/>
-          <div class="char"><span id="ct">0</span>/30</div>
-          <div class="turma-status" id="turmaStatus"></div>
-          <div class="turma-info" id="turmaInfo">
-            <div class="turma-info-row"><span class="turma-info-label">Curso:</span><span id="tInfoCurso">—</span></div>
-            <div class="turma-info-row"><span class="turma-info-label">Turno:</span><span id="tInfoTurno">—</span></div>
+      <!-- FOTO -->
+      <div class="foto-section">
+        <span class="foto-label">Sua foto</span>
+        <div class="foto-tabs">
+          <button class="foto-tab active" onclick="switchFotoTab('camera')">📸 Selfie</button>
+          <button class="foto-tab" onclick="switchFotoTab('upload')">🖼️ Arquivo</button>
+        </div>
+
+        <!-- CÂMERA -->
+        <div id="cameraPanel">
+          <div class="camera-area" id="cameraArea">
+            <div class="cam-overlay" id="camOverlay">
+              <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <button class="cam-btn" onclick="iniciarCamera()">Ativar câmera</button>
+            </div>
+            <video id="video" autoplay playsinline style="display:none"></video>
+            <canvas id="canvas"></canvas>
+          </div>
+          <div class="cam-controls" id="camControls" style="display:none">
+            <button class="cam-btn" onclick="tirarFoto()" style="background:var(--g)">📸 Tirar foto</button>
+            <button class="cam-btn" onclick="pararCamera()" style="background:#475569">Cancelar</button>
+          </div>
+          <div class="foto-preview" id="fotoPreview">
+            <img id="fotoPreviewImg" src="" alt="Prévia"/>
+            <div class="foto-preview-actions">
+              <button class="btn-retirar" onclick="descartarFoto()">↩ Tirar de novo</button>
+              <button class="btn-usar" onclick="usarFoto()">✓ Usar esta foto</button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- NOME -->
-      <div class="field">
-        <label><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Nome completo</label>
-        <input type="text" id="nome" placeholder="Digite seu nome completo" maxlength="120" oninput="cnt(this,'cn')" autocomplete="name"/>
-        <div class="char"><span id="cn">0</span>/120</div>
-      </div>
-    </div>
-
-    <!-- FOTO -->
-    <div class="card">
-      <div class="field">
-        <label><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Foto do aluno</label>
-        <div class="photo-area" id="pa" onclick="document.getElementById('fi').click()" role="button" tabindex="0">
-          <div id="ph"><div class="up-icon">📷</div><div class="up-txt">Clique para selecionar uma foto</div><div class="up-hint">JPG ou PNG — máx. 5 MB</div></div>
-          <img id="pv" src="" alt="Prévia da foto" style="display:none"/>
+        <!-- UPLOAD -->
+        <div id="uploadPanel" style="display:none">
+          <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+            <div id="uploadPlaceholder">
+              <div class="upload-icon">📁</div>
+              <div class="upload-txt">Clique para selecionar</div>
+              <div class="upload-hint">JPG ou PNG — máx. 5 MB</div>
+            </div>
+            <img id="uploadPreview" src="" alt="Prévia" style="display:none"/>
+          </div>
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="carregarUpload(this)"/>
+          <button class="rm-foto" id="rmUpload" style="display:none" onclick="rmUploadFoto()">✕ Remover foto</button>
         </div>
-        <input type="file" id="fi" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="loadFoto(this)"/>
-        <button class="rm-btn" id="rb" onclick="rmFoto()">✕ Remover foto</button>
+      </div>
+
+      <!-- CAMPOS -->
+      <div class="field">
+        <label for="nome">Nome completo</label>
+        <input type="text" id="nome" placeholder="Digite seu nome completo" maxlength="120" autocomplete="name"/>
+      </div>
+      <div class="field">
+        <label for="idTurma">ID da turma</label>
+        <input type="text" id="idTurma" placeholder="Informe o ID da sua turma" maxlength="50" oninput="validarTurma()"/>
+        <div class="turma-hint" id="turmaHint"></div>
+        <div class="turma-info-box" id="turmaInfoBox">
+          Turma encontrada: <b id="tCurso"></b> — <b id="tTurno"></b>
+        </div>
       </div>
     </div>
 
-    <button class="btn" id="btnEnviar" onclick="enviar()">✈️ &nbsp;Enviar cadastro</button>
-    <div class="status" id="st" role="alert"><span id="si"></span><span id="sm"></span></div>
-    <p class="ftr">Seus dados são enviados de forma segura.</p>
-    <div style="text-align:center;margin-top:1.5rem">
-      <a href="admin.html" style="font-size:11px;color:#d1d5db;text-decoration:none;padding:5px 14px;border:1px solid #e5e7eb;border-radius:20px">⚙ Administração</a>
-    </div>
+    <button class="submit-btn" id="btnEnviar" onclick="enviar()">Registrar no carômetro</button>
+    <div class="status" id="statusBox" role="alert"><span id="statusIcon"></span><span id="statusMsg"></span></div>
+    <div class="ftr"><a href="admin.html">⚙ Coordenação</a></div>
   </div>
 
   <div id="successView">
-    <div class="ok-c"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-    <h2>Cadastro enviado!</h2>
-    <p>Seus dados foram registrados com sucesso.<br>Obrigado!</p>
-    <div class="success-badges">
-      <span class="sbadge" id="sBadgeCurso"></span>
-      <span class="sbadge" id="sBadgeTurno"></span>
+    <div class="card">
+      <div class="success-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h2>Cadastrado!</h2>
+      <p>Sua foto foi registrada no carômetro da turma com sucesso.</p>
+      <div class="success-tags">
+        <span class="stag" id="sTagCurso"></span>
+        <span class="stag" id="sTagTurno"></span>
+      </div>
     </div>
   </div>
+
 </div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxZim1Qb7_sZVRMhefpEbhV4ecbwVqtDertJVAxiwIohtns9Nrg884oRZffb8_0UEkDUg/exec';
 let foto64 = '';
-let turmasValidas = [];   // cache das turmas carregadas
-let turmaAtual = null;    // turma validada pelo aluno
+let stream = null;
+let fotoCapturada = null;
+let turmasCache = [];
+let turmaAtual = null;
 let validarTimer = null;
 
-// Carrega turmas ao abrir a página
-(async function init() {
+// Carrega turmas ao abrir
+(async()=>{
   try {
-    const r = await fetch(SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ acao: 'listarTurmas' })
-    }).then(r => r.json());
-    if (r.status === 'ok') turmasValidas = r.turmas || [];
-  } catch (_) {}
+    const r = await api({ acao:'listarTurmas' });
+    if (r.status==='ok') turmasCache = r.turmas||[];
+  } catch(_){}
 })();
 
-function cnt(el, id) { document.getElementById(id).textContent = el.value.length; }
-
-// Valida o ID da turma digitado
-function validarTurma() {
-  clearTimeout(validarTimer);
-  const val = document.getElementById('idTurma').value.trim();
-  const statusEl = document.getElementById('turmaStatus');
-  const infoEl = document.getElementById('turmaInfo');
-  const input = document.getElementById('idTurma');
-
-  if (!val) {
-    statusEl.innerHTML = '';
-    infoEl.classList.remove('show');
-    input.className = '';
-    turmaAtual = null;
-    return;
-  }
-
-  statusEl.innerHTML = '<span class="spin-sm"></span> <span style="color:var(--mu)">Verificando...</span>';
-
-  validarTimer = setTimeout(() => {
-    const encontrada = turmasValidas.find(t => t.idTurma.trim().toLowerCase() === val.toLowerCase());
-    if (encontrada) {
-      turmaAtual = encontrada;
-      input.classList.remove('invalid'); input.classList.add('valid');
-      statusEl.innerHTML = '<span style="color:var(--g);font-size:13px">✓ Turma encontrada</span>';
-      document.getElementById('tInfoCurso').textContent = encontrada.curso;
-      document.getElementById('tInfoTurno').textContent = encontrada.turno;
-      infoEl.classList.add('show');
-    } else {
-      turmaAtual = null;
-      input.classList.remove('valid'); input.classList.add('invalid');
-      statusEl.innerHTML = '<span style="color:var(--red);font-size:13px">✗ ID de turma não encontrado. Verifique com seu professor.</span>';
-      infoEl.classList.remove('show');
-    }
-  }, 500);
+function api(body){
+  return fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
 }
 
-function loadFoto(input) {
-  const f = input.files[0]; if (!f) return;
-  if (f.size > 5 * 1024 * 1024) { setStatus('er', 'Foto muito grande. Máximo 5 MB.'); return; }
+// ── FOTO TABS ──
+function switchFotoTab(tab) {
+  document.querySelectorAll('.foto-tab').forEach((t,i)=>t.classList.toggle('active',(i===0)===(tab==='camera')));
+  document.getElementById('cameraPanel').style.display = tab==='camera'?'block':'none';
+  document.getElementById('uploadPanel').style.display = tab==='upload'?'block':'none';
+  if (tab!=='camera') pararCamera();
+  if (tab!=='upload') rmUploadFoto();
+  if (tab==='camera' || tab==='upload') { foto64=''; fotoCapturada=null; }
+}
+
+// ── CÂMERA ──
+async function iniciarCamera(){
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false});
+    const v = document.getElementById('video');
+    v.srcObject = stream; v.style.display='block';
+    document.getElementById('camOverlay').style.display='none';
+    document.getElementById('camControls').style.display='flex';
+  } catch(_){ setStatus('er','Câmera não disponível. Use a opção Arquivo.'); }
+}
+
+function tirarFoto(){
+  const v = document.getElementById('video');
+  const c = document.getElementById('canvas');
+  c.width=v.videoWidth; c.height=v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  fotoCapturada = c.toDataURL('image/jpeg',0.85);
+  pararCamera();
+  const prev = document.getElementById('fotoPreview');
+  document.getElementById('fotoPreviewImg').src = fotoCapturada;
+  prev.style.display='block';
+  document.getElementById('cameraArea').style.display='none';
+  document.getElementById('camControls').style.display='none';
+}
+
+function pararCamera(){
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+  const v = document.getElementById('video');
+  v.style.display='none';
+  document.getElementById('camOverlay').style.display='flex';
+  document.getElementById('camControls').style.display='none';
+  document.getElementById('cameraArea').style.display='flex';
+}
+
+function descartarFoto(){
+  fotoCapturada=null;
+  document.getElementById('fotoPreview').style.display='none';
+  document.getElementById('cameraArea').style.display='flex';
+}
+
+function usarFoto(){
+  foto64 = fotoCapturada;
+  document.getElementById('fotoPreview').style.display='none';
+  document.getElementById('cameraArea').style.display='none';
+  document.getElementById('camControls').style.display='none';
+  // Mostra miniatura
+  const prev = document.getElementById('fotoPreview');
+  prev.style.display='block';
+  document.getElementById('fotoPreviewImg').src=foto64;
+  document.getElementById('cameraArea').style.display='none';
+}
+
+// ── UPLOAD ──
+function carregarUpload(input){
+  const f = input.files[0]; if(!f) return;
+  if(f.size>5*1024*1024){ setStatus('er','Foto muito grande. Máximo 5 MB.'); return; }
   const r = new FileReader();
-  r.onload = e => {
-    foto64 = e.target.result;
-    document.getElementById('pv').src = foto64;
-    document.getElementById('pv').style.display = 'block';
-    document.getElementById('ph').style.display = 'none';
-    document.getElementById('pa').classList.add('filled');
-    document.getElementById('rb').style.display = 'inline';
+  r.onload = e=>{
+    foto64=e.target.result;
+    document.getElementById('uploadPreview').src=foto64;
+    document.getElementById('uploadPreview').style.display='block';
+    document.getElementById('uploadPlaceholder').style.display='none';
+    document.getElementById('uploadArea').classList.add('has-foto');
+    document.getElementById('rmUpload').style.display='inline';
   };
   r.readAsDataURL(f);
 }
 
-function rmFoto() {
-  foto64 = '';
-  document.getElementById('fi').value = '';
-  document.getElementById('pv').style.display = 'none';
-  document.getElementById('ph').style.display = 'block';
-  document.getElementById('pa').classList.remove('filled');
-  document.getElementById('rb').style.display = 'none';
+function rmUploadFoto(){
+  foto64='';
+  document.getElementById('fileInput').value='';
+  document.getElementById('uploadPreview').style.display='none';
+  document.getElementById('uploadPlaceholder').style.display='block';
+  document.getElementById('uploadArea').classList.remove('has-foto');
+  document.getElementById('rmUpload').style.display='none';
 }
 
-function setStatus(tipo, msg) {
-  const b = document.getElementById('st'), i = document.getElementById('si');
-  b.className = 'status show ' + tipo;
-  i.innerHTML = tipo === 'ld' ? '<div class="spin"></div>' : tipo === 'ok' ? '✅' : tipo === 'dup' ? '⚠️' : '❌';
-  document.getElementById('sm').textContent = msg;
-}
-
-async function enviar() {
-  const idTurma = document.getElementById('idTurma').value.trim();
-  const nome    = document.getElementById('nome').value.trim();
-
-  if (!idTurma)    { setStatus('er', 'Informe o ID da turma.'); return; }
-  if (!turmaAtual) { setStatus('er', 'ID de turma inválido. Verifique com seu professor.'); return; }
-  if (!nome)       { setStatus('er', 'Informe o nome completo.'); return; }
-  if (!foto64)     { setStatus('er', 'Adicione uma foto.'); return; }
-
-  const btn = document.getElementById('btnEnviar');
-  btn.disabled = true;
-  setStatus('ld', 'Enviando dados, aguarde...');
-
-  try {
-    const r = await fetch(SCRIPT_URL, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ acao: 'cadastrar', idTurma, nome, foto: foto64 })
-    }).then(r => r.json());
-
-    if (r.status === 'ok') {
-      document.getElementById('sBadgeCurso').textContent = '📚 ' + (r.curso || turmaAtual.curso);
-      document.getElementById('sBadgeTurno').textContent = '🕐 ' + (r.turno || turmaAtual.turno);
-      document.getElementById('formView').style.display = 'none';
-      document.getElementById('successView').classList.add('show');
-    } else if (r.status === 'duplicata') {
-      setStatus('dup', r.msg);
-      btn.disabled = false;
+// ── VALIDAÇÃO TURMA ──
+function validarTurma(){
+  clearTimeout(validarTimer);
+  const val = document.getElementById('idTurma').value.trim();
+  const hint = document.getElementById('turmaHint');
+  const box  = document.getElementById('turmaInfoBox');
+  const inp  = document.getElementById('idTurma');
+  turmaAtual = null;
+  if(!val){ hint.innerHTML=''; box.classList.remove('show'); inp.className=''; return; }
+  hint.innerHTML='<span style="font-size:12px;color:var(--mu)">Verificando...</span>';
+  validarTimer = setTimeout(()=>{
+    const t = turmasCache.find(x=>x.idTurma.trim().toLowerCase()===val.toLowerCase());
+    if(t){
+      turmaAtual=t;
+      inp.className='valid';
+      hint.innerHTML='<span style="color:var(--g);font-size:13px;font-weight:700">✓ Turma encontrada</span>';
+      document.getElementById('tCurso').textContent=t.curso;
+      document.getElementById('tTurno').textContent=t.turno;
+      box.classList.add('show');
     } else {
-      setStatus('er', r.msg || 'Erro ao cadastrar.');
-      btn.disabled = false;
+      inp.className='invalid';
+      hint.innerHTML='<span style="color:var(--red);font-size:12px;font-weight:600">✗ ID não encontrado. Verifique com a coordenação.</span>';
+      box.classList.remove('show');
     }
-  } catch (e) {
-    setStatus('er', 'Falha na conexão. Tente novamente.');
-    btn.disabled = false;
-  }
+  },400);
+}
+
+// ── STATUS ──
+function setStatus(tipo,msg){
+  const b=document.getElementById('statusBox'),i=document.getElementById('statusIcon');
+  b.className='status show '+tipo;
+  i.innerHTML=tipo==='ld'?'<div class="spin"></div>':tipo==='ok'?'✅':tipo==='dup'?'⚠️':'❌';
+  document.getElementById('statusMsg').textContent=msg;
+}
+
+// ── ENVIAR ──
+async function enviar(){
+  const nome    = document.getElementById('nome').value.trim();
+  const idTurma = document.getElementById('idTurma').value.trim();
+  if(!foto64)   { setStatus('er','Adicione sua foto (selfie ou arquivo).'); return; }
+  if(!nome)     { setStatus('er','Informe seu nome completo.'); return; }
+  if(!turmaAtual){ setStatus('er','ID de turma inválido. Verifique com a coordenação.'); return; }
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled=true; setStatus('ld','Registrando no carômetro...');
+  try{
+    const r = await api({ acao:'cadastrar', idTurma, nome, foto:foto64 });
+    if(r.status==='ok'){
+      document.getElementById('sTagCurso').textContent='📚 '+r.curso;
+      document.getElementById('sTagTurno').textContent='🕐 '+r.turno;
+      document.getElementById('formView').style.display='none';
+      document.getElementById('successView').classList.add('show');
+    } else if(r.status==='duplicata'){
+      setStatus('dup',r.msg); btn.disabled=false;
+    } else {
+      setStatus('er',r.msg||'Erro ao cadastrar.'); btn.disabled=false;
+    }
+  } catch(e){ setStatus('er','Falha na conexão. Tente novamente.'); btn.disabled=false; }
 }
 </script>
 </body>
