@@ -6,28 +6,40 @@
 <title>Cadastro de Aluno</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#666;--bd:#e0e0e0;--bg:#f4f4f2;--cd:#fff;--r:14px}
+:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#6b7280;--bd:#e5e7eb;--bg:#f3f4f6;--cd:#fff;--r:14px;--red:#dc2626}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;padding:2.5rem 1rem 3rem}
 .wrap{max-width:500px;margin:0 auto}
 .hdr{text-align:center;margin-bottom:2rem}
 .logo{width:68px;height:68px;background:var(--g);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 6px 24px rgba(29,158,117,.28)}
 .logo svg{width:34px;height:34px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-h1{font-size:23px;font-weight:700;letter-spacing:-.3px;margin-bottom:4px}
+h1{font-size:23px;font-weight:700;margin-bottom:4px}
 .sub{font-size:14px;color:var(--mu)}
 .card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);padding:1.5rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .field{margin-bottom:1.2rem}.field:last-child{margin-bottom:0}
 label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
 label svg{width:14px;height:14px;stroke:var(--mu);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-input[type=text],select{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:15px;color:var(--tx);background:#fafafa;transition:border-color .18s,box-shadow .18s;outline:none;-webkit-appearance:none;appearance:none}
-input[type=text]:focus,select:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.13);background:#fff}
+input[type=text]{width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:15px;color:var(--tx);background:#fafafa;outline:none;transition:border-color .18s,box-shadow .18s}
+input[type=text]:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
+input.valid{border-color:var(--g)!important;background:#fff}
+input.invalid{border-color:var(--red)!important;background:#fff}
+
+/* validação turma */
+.turma-wrap{position:relative}
+.turma-status{margin-top:6px;font-size:12px;display:flex;align-items:center;gap:6px;min-height:18px}
+.turma-info{background:var(--gl);border:1px solid #5DCAA5;border-radius:8px;padding:8px 12px;margin-top:8px;display:none}
+.turma-info.show{display:block}
+.turma-info-row{font-size:13px;color:#085041;display:flex;gap:6px;align-items:center;margin-bottom:2px}
+.turma-info-row:last-child{margin-bottom:0}
+.turma-info-label{font-weight:700;min-width:48px}
+.spin-sm{width:13px;height:13px;border:2px solid #ddd;border-top-color:var(--g);border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 .char{font-size:11px;color:#bbb;text-align:right;margin-top:4px}
 .photo-area{border:2px dashed var(--bd);border-radius:var(--r);padding:2.2rem 1rem;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;overflow:hidden}
 .photo-area:hover{border-color:var(--g);background:var(--gl)}
 .photo-area.filled{padding:0;border-style:solid;border-color:var(--g)}
 .photo-area img{width:100%;max-height:210px;object-fit:cover;display:block;border-radius:calc(var(--r) - 2px)}
-.up-icon{font-size:38px;margin-bottom:10px}
-.up-txt{font-size:14px;color:var(--mu);font-weight:500}
-.up-hint{font-size:12px;color:#bbb;margin-top:5px}
+.up-icon{font-size:38px;margin-bottom:10px}.up-txt{font-size:14px;color:var(--mu);font-weight:500}.up-hint{font-size:12px;color:#bbb;margin-top:5px}
 .rm-btn{font-size:12px;color:var(--g);background:none;border:none;cursor:pointer;margin-top:7px;padding:3px 0;display:none}
 .btn{width:100%;padding:15px;background:var(--g);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .18s,transform .1s;box-shadow:0 5px 18px rgba(29,158,117,.32)}
 .btn:hover{background:var(--gd)}.btn:active{transform:scale(.98)}.btn:disabled{background:#b0b0b0;box-shadow:none;cursor:not-allowed;transform:none}
@@ -36,14 +48,16 @@ input[type=text]:focus,select:focus{border-color:var(--g);box-shadow:0 0 0 3px r
 .status.ok{background:#E1F5EE;color:#085041;border:1px solid #5DCAA5}
 .status.er{background:#FEF0F0;color:#7A1F1F;border:1px solid #f7a0a0}
 .status.ld{background:#f5f5f3;color:#555;border:1px solid #ddd}
+.status.dup{background:#FAEEDA;color:#633806;border:1px solid #FAC775}
 .spin{width:18px;height:18px;flex-shrink:0;border:2.5px solid #ddd;border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
 #successView{display:none;text-align:center;padding:3rem 1rem}
 #successView.show{display:block}
 .ok-c{width:82px;height:82px;background:var(--gl);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem}
 .ok-c svg{width:40px;height:40px;stroke:var(--g);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 #successView h2{font-size:22px;font-weight:700;margin-bottom:8px}
-#successView p{font-size:15px;color:var(--mu);margin-bottom:1.8rem;line-height:1.6}
+#successView p{font-size:15px;color:var(--mu);line-height:1.6}
+.success-badges{display:flex;gap:8px;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+.sbadge{padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;background:var(--gl);color:#085041}
 .ftr{text-align:center;margin-top:2rem;font-size:12px;color:#c0c0c0}
 </style>
 </head>
@@ -51,35 +65,27 @@ input[type=text]:focus,select:focus{border-color:var(--g);box-shadow:0 0 0 3px r
 <div class="wrap">
   <div id="formView">
     <div class="hdr">
-      <div class="logo">
-        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
       <h1>Cadastro de aluno</h1>
       <p class="sub">Preencha todos os campos para se cadastrar</p>
     </div>
 
     <div class="card">
+      <!-- ID DA TURMA com validação -->
       <div class="field">
         <label><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>ID da turma</label>
-        <input type="text" id="idTurma" placeholder="Ex: 2025-ENF-01" maxlength="30" oninput="cnt(this,'ct')"/>
-        <div class="char"><span id="ct">0</span>/30</div>
+        <div class="turma-wrap">
+          <input type="text" id="idTurma" placeholder="Digite o ID da sua turma" maxlength="30" oninput="cnt(this,'ct');validarTurma()"/>
+          <div class="char"><span id="ct">0</span>/30</div>
+          <div class="turma-status" id="turmaStatus"></div>
+          <div class="turma-info" id="turmaInfo">
+            <div class="turma-info-row"><span class="turma-info-label">Curso:</span><span id="tInfoCurso">—</span></div>
+            <div class="turma-info-row"><span class="turma-info-label">Turno:</span><span id="tInfoTurno">—</span></div>
+          </div>
+        </div>
       </div>
-      <div class="field">
-        <label><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Curso</label>
-        <input type="text" id="curso" placeholder="Ex: Enfermagem, Direito..." maxlength="50" oninput="cnt(this,'cc')"/>
-        <div class="char"><span id="cc">0</span>/50</div>
-      </div>
-      <div class="field">
-        <label><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Turno</label>
-        <select id="turno">
-          <option value="">Selecione o turno</option>
-          <option>Manhã</option>
-          <option>Tarde</option>
-          <option>Noite</option>
-          <option>Integral</option>
-          <option>EAD</option>
-        </select>
-      </div>
+
+      <!-- NOME -->
       <div class="field">
         <label><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>Nome completo</label>
         <input type="text" id="nome" placeholder="Digite seu nome completo" maxlength="120" oninput="cnt(this,'cn')" autocomplete="name"/>
@@ -87,6 +93,7 @@ input[type=text]:focus,select:focus{border-color:var(--g);box-shadow:0 0 0 3px r
       </div>
     </div>
 
+    <!-- FOTO -->
     <div class="card">
       <div class="field">
         <label><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Foto do aluno</label>
@@ -102,76 +109,143 @@ input[type=text]:focus,select:focus{border-color:var(--g);box-shadow:0 0 0 3px r
     <button class="btn" id="btnEnviar" onclick="enviar()">✈️ &nbsp;Enviar cadastro</button>
     <div class="status" id="st" role="alert"><span id="si"></span><span id="sm"></span></div>
     <p class="ftr">Seus dados são enviados de forma segura.</p>
-    <div style="text-align:center;margin-top:2rem"><a href="admin.html" style="font-size:11px;color:#ccc;text-decoration:none;padding:6px 14px;border:1px solid #e8e8e8;border-radius:20px">⚙ Administração</a></div>
+    <div style="text-align:center;margin-top:1.5rem">
+      <a href="admin.html" style="font-size:11px;color:#d1d5db;text-decoration:none;padding:5px 14px;border:1px solid #e5e7eb;border-radius:20px">⚙ Administração</a>
+    </div>
   </div>
 
   <div id="successView">
     <div class="ok-c"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
     <h2>Cadastro enviado!</h2>
     <p>Seus dados foram registrados com sucesso.<br>Obrigado!</p>
+    <div class="success-badges">
+      <span class="sbadge" id="sBadgeCurso"></span>
+      <span class="sbadge" id="sBadgeTurno"></span>
+    </div>
   </div>
 </div>
 
 <script>
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwlk23kIjp8AujXVvHN3BMe1alswv5z53tEY0lwNSZm/exec';
-let foto64='';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlk23kIjp8AujXVvHN3BMe1alswv5z53tEY0lwNSZm/exec';
+let foto64 = '';
+let turmasValidas = [];   // cache das turmas carregadas
+let turmaAtual = null;    // turma validada pelo aluno
+let validarTimer = null;
 
-function cnt(el,id){document.getElementById(id).textContent=el.value.length}
+// Carrega turmas ao abrir a página
+(async function init() {
+  try {
+    const r = await fetch(SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'listarTurmas' })
+    }).then(r => r.json());
+    if (r.status === 'ok') turmasValidas = r.turmas || [];
+  } catch (_) {}
+})();
 
-function loadFoto(input){
-  const f=input.files[0];if(!f)return;
-  if(f.size>5*1024*1024){setStatus('er','Foto muito grande. Máximo 5 MB.');return}
-  const r=new FileReader();
-  r.onload=e=>{
-    foto64=e.target.result;
-    document.getElementById('pv').src=foto64;
-    document.getElementById('pv').style.display='block';
-    document.getElementById('ph').style.display='none';
+function cnt(el, id) { document.getElementById(id).textContent = el.value.length; }
+
+// Valida o ID da turma digitado
+function validarTurma() {
+  clearTimeout(validarTimer);
+  const val = document.getElementById('idTurma').value.trim();
+  const statusEl = document.getElementById('turmaStatus');
+  const infoEl = document.getElementById('turmaInfo');
+  const input = document.getElementById('idTurma');
+
+  if (!val) {
+    statusEl.innerHTML = '';
+    infoEl.classList.remove('show');
+    input.className = '';
+    turmaAtual = null;
+    return;
+  }
+
+  statusEl.innerHTML = '<span class="spin-sm"></span> <span style="color:var(--mu)">Verificando...</span>';
+
+  validarTimer = setTimeout(() => {
+    const encontrada = turmasValidas.find(t => t.idTurma.trim().toLowerCase() === val.toLowerCase());
+    if (encontrada) {
+      turmaAtual = encontrada;
+      input.classList.remove('invalid'); input.classList.add('valid');
+      statusEl.innerHTML = '<span style="color:var(--g);font-size:13px">✓ Turma encontrada</span>';
+      document.getElementById('tInfoCurso').textContent = encontrada.curso;
+      document.getElementById('tInfoTurno').textContent = encontrada.turno;
+      infoEl.classList.add('show');
+    } else {
+      turmaAtual = null;
+      input.classList.remove('valid'); input.classList.add('invalid');
+      statusEl.innerHTML = '<span style="color:var(--red);font-size:13px">✗ ID de turma não encontrado. Verifique com seu professor.</span>';
+      infoEl.classList.remove('show');
+    }
+  }, 500);
+}
+
+function loadFoto(input) {
+  const f = input.files[0]; if (!f) return;
+  if (f.size > 5 * 1024 * 1024) { setStatus('er', 'Foto muito grande. Máximo 5 MB.'); return; }
+  const r = new FileReader();
+  r.onload = e => {
+    foto64 = e.target.result;
+    document.getElementById('pv').src = foto64;
+    document.getElementById('pv').style.display = 'block';
+    document.getElementById('ph').style.display = 'none';
     document.getElementById('pa').classList.add('filled');
-    document.getElementById('rb').style.display='inline';
+    document.getElementById('rb').style.display = 'inline';
   };
   r.readAsDataURL(f);
 }
 
-function rmFoto(){
-  foto64='';document.getElementById('fi').value='';
-  document.getElementById('pv').style.display='none';
-  document.getElementById('ph').style.display='block';
+function rmFoto() {
+  foto64 = '';
+  document.getElementById('fi').value = '';
+  document.getElementById('pv').style.display = 'none';
+  document.getElementById('ph').style.display = 'block';
   document.getElementById('pa').classList.remove('filled');
-  document.getElementById('rb').style.display='none';
+  document.getElementById('rb').style.display = 'none';
 }
 
-function setStatus(tipo,msg){
-  const b=document.getElementById('st'),i=document.getElementById('si');
-  b.className='status show '+tipo;
-  i.innerHTML=tipo==='ld'?'<div class="spin"></div>':tipo==='ok'?'✅':'❌';
-  document.getElementById('sm').textContent=msg;
+function setStatus(tipo, msg) {
+  const b = document.getElementById('st'), i = document.getElementById('si');
+  b.className = 'status show ' + tipo;
+  i.innerHTML = tipo === 'ld' ? '<div class="spin"></div>' : tipo === 'ok' ? '✅' : tipo === 'dup' ? '⚠️' : '❌';
+  document.getElementById('sm').textContent = msg;
 }
 
-async function enviar(){
-  const idTurma=document.getElementById('idTurma').value.trim();
-  const curso=document.getElementById('curso').value.trim();
-  const turno=document.getElementById('turno').value;
-  const nome=document.getElementById('nome').value.trim();
-  if(!idTurma){setStatus('er','Informe o ID da turma.');return}
-  if(!curso){setStatus('er','Informe o curso.');return}
-  if(!turno){setStatus('er','Selecione o turno.');return}
-  if(!nome){setStatus('er','Informe o nome completo.');return}
-  if(!foto64){setStatus('er','Adicione uma foto.');return}
-  const btn=document.getElementById('btnEnviar');
-  btn.disabled=true;
-  setStatus('ld','Enviando dados, aguarde...');
-  try{
-    await fetch(SCRIPT_URL,{
-      method:'POST',mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({acao:'cadastrar',idTurma,curso,turno,nome,foto:foto64})
-    });
-    document.getElementById('formView').style.display='none';
-    document.getElementById('successView').classList.add('show');
-  }catch(e){
-    setStatus('er','Falha na conexão. Tente novamente.');
-    btn.disabled=false;
+async function enviar() {
+  const idTurma = document.getElementById('idTurma').value.trim();
+  const nome    = document.getElementById('nome').value.trim();
+
+  if (!idTurma)    { setStatus('er', 'Informe o ID da turma.'); return; }
+  if (!turmaAtual) { setStatus('er', 'ID de turma inválido. Verifique com seu professor.'); return; }
+  if (!nome)       { setStatus('er', 'Informe o nome completo.'); return; }
+  if (!foto64)     { setStatus('er', 'Adicione uma foto.'); return; }
+
+  const btn = document.getElementById('btnEnviar');
+  btn.disabled = true;
+  setStatus('ld', 'Enviando dados, aguarde...');
+
+  try {
+    const r = await fetch(SCRIPT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ acao: 'cadastrar', idTurma, nome, foto: foto64 })
+    }).then(r => r.json());
+
+    if (r.status === 'ok') {
+      document.getElementById('sBadgeCurso').textContent = '📚 ' + (r.curso || turmaAtual.curso);
+      document.getElementById('sBadgeTurno').textContent = '🕐 ' + (r.turno || turmaAtual.turno);
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').classList.add('show');
+    } else if (r.status === 'duplicata') {
+      setStatus('dup', r.msg);
+      btn.disabled = false;
+    } else {
+      setStatus('er', r.msg || 'Erro ao cadastrar.');
+      btn.disabled = false;
+    }
+  } catch (e) {
+    setStatus('er', 'Falha na conexão. Tente novamente.');
+    btn.disabled = false;
   }
 }
 </script>
