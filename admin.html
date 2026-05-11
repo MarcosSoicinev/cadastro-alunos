@@ -6,203 +6,347 @@
 <title>Painel Pedagógico</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;--tx:#1a1a1a;--mu:#6b7280;--bd:#e5e7eb;--bg:#f3f4f6;--cd:#fff;--r:12px;--red:#dc2626;--redl:#fef2f2;--dark:#111827;--dark2:#1f2937}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+:root{
+  --g:#1D9E75;--gd:#0F6E56;--gl:#E1F5EE;
+  --tx:#111827;--mu:#6b7280;--bd:#e5e7eb;
+  --bg:#f9fafb;--cd:#ffffff;--r:12px;
+  --red:#dc2626;--redl:#fef2f2;
+  --dark:#0f172a;--dark2:#1e293b;--dark3:#334155;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.08),0 4px 6px rgba(0,0,0,.04);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.5}
 
-#loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.login-box{background:var(--cd);border-radius:20px;border:1px solid var(--bd);padding:2.5rem 2rem;width:100%;max-width:380px;box-shadow:0 4px 24px rgba(0,0,0,.08);text-align:center}
-.login-logo{width:72px;height:72px;background:var(--g);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;box-shadow:0 6px 20px rgba(29,158,117,.3)}
+/* ══ LOGIN ══ */
+#loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f4c35 100%)}
+.login-card{background:var(--cd);border-radius:20px;padding:2.5rem 2rem;width:100%;max-width:400px;box-shadow:0 25px 50px rgba(0,0,0,.25);text-align:center}
+.login-logo{width:72px;height:72px;background:linear-gradient(135deg,var(--g),var(--gd));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(29,158,117,.4)}
 .login-logo svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.login-box h1{font-size:22px;font-weight:700;margin-bottom:4px}
-.login-box p{font-size:14px;color:var(--mu);margin-bottom:1.75rem}
-.login-box label{display:block;text-align:left;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-.login-box input{width:100%;padding:12px 14px;border:1.5px solid var(--bd);border-radius:10px;font-size:15px;outline:none;background:#fafafa;transition:border-color .18s,box-shadow .18s}
-.login-box input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
-.login-btn{width:100%;margin-top:1rem;padding:13px;background:var(--g);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:background .18s}
-.login-btn:hover{background:var(--gd)}.login-btn:disabled{background:#9ca3af;cursor:not-allowed}
-.login-err{margin-top:.75rem;font-size:13px;color:var(--red);display:none}.login-err.show{display:block}
+.login-card h1{font-size:24px;font-weight:800;margin-bottom:4px;letter-spacing:-.5px}
+.login-card p{font-size:14px;color:var(--mu);margin-bottom:2rem}
+.form-group{text-align:left;margin-bottom:1rem}
+.form-group label{display:block;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.form-group input{width:100%;padding:12px 16px;border:1.5px solid var(--bd);border-radius:10px;font-size:15px;outline:none;background:#fafafa;transition:all .18s;color:var(--tx)}
+.form-group input:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.12);background:#fff}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(29,158,117,.3)}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(29,158,117,.4)}
+.login-btn:active{transform:translateY(0)}
+.login-btn:disabled{background:#9ca3af;box-shadow:none;transform:none;cursor:not-allowed}
+.login-err{margin-top:.875rem;font-size:13px;color:var(--red);background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;display:none;text-align:left}
+.login-err.show{display:block}
 
-#painelView{display:none;min-height:100vh}
+/* ══ LAYOUT PRINCIPAL ══ */
+#painelView{display:none;min-height:100vh;flex-direction:column}
 #painelView.show{display:flex}
-.sidebar{width:270px;background:var(--dark);min-height:100vh;display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:20}
-.sidebar-header{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
-.s-logo{display:flex;align-items:center;gap:10px}
-.s-logo-icon{width:38px;height:38px;background:var(--g);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.s-logo-icon svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.s-logo-txt{font-size:14px;font-weight:700;color:#fff;line-height:1.3}
-.s-logo-sub{font-size:11px;color:#9ca3af}
-.s-tabs{display:flex;padding:.75rem .75rem 0;gap:4px}
-.s-tab{flex:1;padding:7px 4px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#9ca3af;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .18s}
-.s-tab.active{background:var(--g);color:#fff;border-color:var(--g)}
-.s-tab:hover:not(.active){background:rgba(255,255,255,.07);color:#fff}
-.s-panel{padding:.75rem}
-.s-panel.hidden{display:none}
-.f-label{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;display:block;margin-top:.75rem}
-.f-input{width:100%;padding:8px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-size:13px;outline:none;transition:border-color .18s}
-.f-input:focus{border-color:var(--g);background:rgba(255,255,255,.1)}
-.f-input option{background:var(--dark2);color:#fff}
-.clear-btn{width:100%;margin-top:.75rem;padding:8px;background:transparent;color:#9ca3af;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:12px;cursor:pointer;transition:all .18s}
-.clear-btn:hover{background:rgba(255,255,255,.07);color:#fff}
-.turma-form{background:rgba(255,255,255,.05);border-radius:10px;padding:.875rem;margin-bottom:.75rem}
-.turma-form-title{font-size:12px;font-weight:700;color:#e5e7eb;margin-bottom:.75rem}
-.tf-input{width:100%;padding:7px 10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fff;font-size:13px;outline:none;margin-bottom:6px}
-.tf-input:focus{border-color:var(--g)}
-.tf-input option{background:var(--dark2)}
-.criar-btn{width:100%;padding:9px;background:var(--g);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:background .18s;margin-top:2px}
-.criar-btn:hover{background:var(--gd)}.criar-btn:disabled{background:#4b5563;cursor:not-allowed}
-.turmas-list{display:flex;flex-direction:column;gap:6px;margin-top:.5rem}
-.turma-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.625rem .75rem;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.turma-item-info{flex:1;min-width:0}
-.turma-item-id{font-size:12px;font-weight:700;color:#f9fafb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.turma-item-meta{font-size:11px;color:#9ca3af;margin-top:2px}
-.turma-del{background:none;border:none;color:#6b7280;cursor:pointer;font-size:16px;flex-shrink:0;padding:2px 4px;border-radius:4px;line-height:1;transition:color .15s}
-.turma-del:hover{color:#f87171}
-.no-turmas{font-size:12px;color:#6b7280;text-align:center;padding:.75rem 0}
-.s-footer{margin-top:auto;padding:.75rem;border-top:1px solid rgba(255,255,255,.08)}
-.logout-btn{width:100%;padding:9px;background:transparent;color:#9ca3af;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .18s}
-.logout-btn:hover{background:rgba(220,38,38,.15);color:#fca5a5;border-color:rgba(220,38,38,.3)}
-.logout-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-.main{margin-left:270px;flex:1;display:flex;flex-direction:column;min-width:0}
-.topbar{background:var(--cd);border-bottom:1px solid var(--bd);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:10}
-.topbar h2{font-size:18px;font-weight:700}
-.topbar p{font-size:13px;color:var(--mu);margin-top:2px}
-.stats-row{display:flex;gap:.75rem;flex-wrap:wrap}
-.stat-pill{background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--mu);white-space:nowrap}
-.stat-pill span{color:var(--tx);font-weight:700}
-.content{padding:1.5rem;flex:1}
-.curso-section{margin-bottom:2rem}
-.curso-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:2px solid var(--gl)}
-.curso-badge{background:var(--g);color:#fff;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
-.curso-count{font-size:13px;color:var(--mu)}
-.alunos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem}
-.aluno-card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;transition:box-shadow .2s,transform .2s}
-.aluno-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
-.foto-wrap{position:relative;height:190px;background:#f9fafb;overflow:hidden;cursor:pointer}
+/* topnav */
+.topnav{background:var(--dark);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 1px 0 rgba(255,255,255,.06)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-logo{width:34px;height:34px;background:var(--g);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.nav-logo svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-title{font-size:15px;font-weight:700;color:#fff}
+.nav-sub{font-size:11px;color:#94a3b8;margin-top:1px}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.nav-stat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:5px 12px;font-size:12px;color:#94a3b8}
+.nav-stat b{color:#fff;font-weight:700}
+.logout-btn{padding:7px 14px;background:transparent;color:#94a3b8;border:1px solid rgba(255,255,255,.1);border-radius:8px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .18s}
+.logout-btn:hover{background:rgba(220,38,38,.15);color:#fca5a5;border-color:rgba(220,38,38,.3)}
+.logout-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* tabs */
+.tabs{background:var(--cd);border-bottom:1px solid var(--bd);padding:0 1.5rem;display:flex;gap:0}
+.tab-btn{padding:14px 20px;font-size:14px;font-weight:600;color:var(--mu);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;display:flex;align-items:center;gap:7px}
+.tab-btn:hover{color:var(--tx)}
+.tab-btn.active{color:var(--g);border-bottom-color:var(--g)}
+.tab-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ══ CONTEÚDO ══ */
+.page{display:none;flex:1;padding:1.5rem;max-width:1400px;width:100%;margin:0 auto}
+.page.active{display:block}
+
+/* stats bar */
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;box-shadow:var(--shadow)}
+.stat-label{font-size:12px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.stat-val{font-size:28px;font-weight:800;color:var(--tx);letter-spacing:-1px}
+.stat-card.green .stat-val{color:var(--g)}
+
+/* filtros */
+.filter-bar{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);padding:1.25rem;margin-bottom:1.5rem;box-shadow:var(--shadow)}
+.filter-bar-inner{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:.75rem;align-items:end}
+.filter-group label{display:block;font-size:12px;font-weight:600;color:var(--mu);margin-bottom:5px}
+.filter-group input,.filter-group select{width:100%;padding:9px 12px;border:1.5px solid var(--bd);border-radius:8px;font-size:14px;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
+.filter-group input:focus,.filter-group select:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1);background:#fff}
+.clear-filter-btn{padding:9px 16px;background:transparent;border:1.5px solid var(--bd);border-radius:8px;font-size:13px;font-weight:600;color:var(--mu);cursor:pointer;white-space:nowrap;transition:all .18s}
+.clear-filter-btn:hover{border-color:var(--red);color:var(--red);background:var(--redl)}
+
+/* grid alunos */
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:2px solid var(--gl)}
+.section-title{font-size:15px;font-weight:700}
+.section-badge{background:var(--g);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.section-count{font-size:13px;color:var(--mu)}
+.alunos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+
+.aluno-card{background:var(--cd);border-radius:var(--r);border:1px solid var(--bd);overflow:hidden;box-shadow:var(--shadow);transition:all .2s}
+.aluno-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.foto-wrap{position:relative;height:200px;background:#f1f5f9;overflow:hidden;cursor:pointer}
 .foto-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.aluno-card:hover .foto-wrap img{transform:scale(1.04)}
-.foto-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:52px;background:#f3f4f6}
-.turno-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
-.aluno-info{padding:.875rem}
-.aluno-nome{font-size:14px;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.aluno-curso{font-size:12px;color:var(--g);font-weight:600;margin-bottom:2px}
-.aluno-turma{font-size:11px;color:var(--mu)}
-.aluno-data{font-size:10px;color:#9ca3af;margin-top:3px}
-.del-btn{width:100%;padding:7px;background:none;border:none;border-top:1px solid var(--bd);color:#9ca3af;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s}
-.del-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.del-btn:hover{background:var(--redl);color:var(--red)}
-.empty-state{text-align:center;padding:4rem 1rem;color:var(--mu)}
-.empty-icon{font-size:56px;margin-bottom:1rem}
-.empty-state h3{font-size:16px;font-weight:600;margin-bottom:4px}
-.big-spin{width:40px;height:40px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
-@keyframes spin{to{transform:rotate(360deg)}}
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;z-index:150;padding:1rem;flex-direction:column;gap:1rem}
+.aluno-card:hover .foto-wrap img{transform:scale(1.06)}
+.foto-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;color:#cbd5e1}
+.turno-chip{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.65);backdrop-filter:blur(4px);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px}
+.foto-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.foto-overlay svg{width:32px;height:32px;stroke:#fff;fill:none;stroke-width:2;opacity:0;transition:opacity .2s}
+.foto-wrap:hover .foto-overlay{background:rgba(0,0,0,.3)}
+.foto-wrap:hover .foto-overlay svg{opacity:1}
+.aluno-body{padding:1rem}
+.aluno-nome{font-size:14px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aluno-curso{font-size:12px;color:var(--g);font-weight:600;margin-bottom:6px}
+.aluno-chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:#f1f5f9;color:var(--mu)}
+.aluno-data{font-size:10px;color:#9ca3af;margin-top:6px}
+.del-aluno-btn{width:100%;padding:8px;background:none;border:none;border-top:1px solid var(--bd);color:#9ca3af;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s}
+.del-aluno-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.del-aluno-btn:hover{background:var(--redl);color:var(--red)}
+
+/* empty */
+.empty-state{text-align:center;padding:5rem 1rem;color:var(--mu)}
+.empty-state .icon{font-size:64px;margin-bottom:1rem;opacity:.5}
+.empty-state h3{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--tx)}
+.empty-state p{font-size:14px}
+
+/* ══ TURMAS PAGE ══ */
+.turmas-layout{display:grid;grid-template-columns:380px 1fr;gap:1.5rem;align-items:start}
+.turma-form-card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);padding:1.5rem;box-shadow:var(--shadow);position:sticky;top:80px}
+.turma-form-card h3{font-size:16px;font-weight:700;margin-bottom:1.25rem;display:flex;align-items:center;gap:8px}
+.turma-form-card h3 svg{width:18px;height:18px;stroke:var(--g);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tf-group{margin-bottom:1rem}
+.tf-group label{display:block;font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.tf-group input,.tf-group select{width:100%;padding:10px 14px;border:1.5px solid var(--bd);border-radius:9px;font-size:14px;color:var(--tx);background:#fafafa;outline:none;transition:all .18s}
+.tf-group input:focus,.tf-group select:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(29,158,117,.1);background:#fff}
+.criar-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--g),var(--gd));color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(29,158,117,.25);display:flex;align-items:center;justify-content:center;gap:8px}
+.criar-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(29,158,117,.35)}
+.criar-btn:disabled{background:#9ca3af;box-shadow:none;transform:none;cursor:not-allowed}
+
+.turmas-list-card{background:var(--cd);border:1px solid var(--bd);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.turmas-list-header{padding:1rem 1.25rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.turmas-list-header h3{font-size:15px;font-weight:700}
+.turma-count-badge{background:#f1f5f9;color:var(--mu);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
+.turma-row{display:flex;align-items:center;padding:1rem 1.25rem;border-bottom:1px solid var(--bd);transition:background .15s;gap:1rem}
+.turma-row:last-child{border-bottom:none}
+.turma-row:hover{background:#f9fafb}
+.turma-icon{width:40px;height:40px;background:var(--gl);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.turma-icon svg{width:20px;height:20px;stroke:var(--g);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.turma-info{flex:1;min-width:0}
+.turma-id{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.turma-meta{font-size:12px;color:var(--mu);margin-top:2px}
+.turma-chips{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.turma-chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.tc-curso{background:#eff6ff;color:#1d4ed8}
+.tc-turno{background:#fef3c7;color:#92400e}
+.turma-del-btn{width:34px;height:34px;background:none;border:1.5px solid var(--bd);border-radius:8px;color:#9ca3af;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.turma-del-btn:hover{background:var(--redl);border-color:#fecaca;color:var(--red)}
+.turma-del-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.no-turmas{padding:2.5rem;text-align:center;color:var(--mu);font-size:14px}
+
+/* lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:200;padding:1rem;flex-direction:column;gap:1rem}
 .lightbox.show{display:flex}
-.lightbox img{max-width:90vw;max-height:68vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,.5)}
-.lb-info{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border-radius:10px;padding:1rem 1.5rem;color:#fff;text-align:center}
+.lightbox img{max-width:88vw;max-height:70vh;border-radius:14px;object-fit:contain;box-shadow:0 25px 60px rgba(0,0,0,.6)}
+.lb-card{background:rgba(255,255,255,.1);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:1rem 1.5rem;color:#fff;text-align:center}
 .lb-nome{font-size:18px;font-weight:700;margin-bottom:4px}
-.lb-meta{font-size:13px;opacity:.8}
-.lb-close{position:fixed;top:1rem;right:1rem;width:40px;height:40px;background:rgba(255,255,255,.15);border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:160;padding:1rem}
+.lb-meta{font-size:13px;color:rgba(255,255,255,.7)}
+.lb-close{position:fixed;top:1.25rem;right:1.25rem;width:42px;height:42px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:50%;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s}
+.lb-close:hover{background:rgba(255,255,255,.2)}
+
+/* modais */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:180;padding:1rem}
 .overlay.show{display:flex}
-.modal{background:#fff;border-radius:16px;padding:1.75rem;max-width:360px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.2)}
-.modal h3{font-size:18px;font-weight:700;margin-bottom:.5rem}
-.modal p{font-size:14px;color:var(--mu);line-height:1.6;margin-bottom:1.25rem}
+.modal{background:#fff;border-radius:16px;padding:2rem;max-width:400px;width:100%;box-shadow:0 25px 50px rgba(0,0,0,.25)}
+.modal-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.modal-icon.danger{background:#fef2f2}
+.modal-icon svg{width:26px;height:26px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:.5rem;letter-spacing:-.3px}
+.modal p{font-size:14px;color:var(--mu);line-height:1.6;margin-bottom:1.5rem}
 .modal-btns{display:flex;gap:.75rem}
-.modal-btns button{flex:1;padding:11px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:background .15s}
-.btn-cancel{background:#f3f4f6;color:var(--tx)}.btn-cancel:hover{background:#e5e7eb}
-.btn-del{background:var(--red);color:#fff}.btn-del:hover{background:#b91c1c}
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--dark2);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .3s;z-index:200;max-width:320px}
+.modal-btns button{flex:1;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .15s}
+.btn-cancel{background:#f1f5f9;color:var(--tx)}.btn-cancel:hover{background:#e2e8f0}
+.btn-del{background:var(--red);color:#fff;box-shadow:0 4px 12px rgba(220,38,38,.3)}.btn-del:hover{background:#b91c1c}
+
+/* toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:var(--shadow-lg);transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:300;display:flex;align-items:center;gap:10px;max-width:340px}
 .toast.show{transform:translateY(0);opacity:1}
-.toast.ok{border-left:4px solid var(--g)}.toast.er{border-left:4px solid var(--red)}
-.spin-sm{width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:4px}
+.toast.ok{background:#fff;border:1px solid #d1fae5;color:#065f46}
+.toast.er{background:#fff;border:1px solid #fecaca;color:#991b1b}
+.toast-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px}
+.toast.ok .toast-icon{background:#d1fae5}
+.toast.er .toast-icon{background:#fee2e2}
+
+/* loading */
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+.spin-dark{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,.1);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite}
+.page-loading{text-align:center;padding:5rem 1rem}
+.page-loading .big-spin{width:44px;height:44px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:900px){
+  .turmas-layout{grid-template-columns:1fr}
+  .filter-bar-inner{grid-template-columns:1fr 1fr}
+  .nav-stat{display:none}
+}
+@media(max-width:600px){
+  .filter-bar-inner{grid-template-columns:1fr}
+  .tabs{padding:0 1rem}
+  .page{padding:1rem}
+  .alunos-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+}
 </style>
 </head>
 <body>
 
+<!-- ══ LOGIN ══ -->
 <div id="loginView">
-  <div class="login-box">
+  <div class="login-card">
     <div class="login-logo"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
     <h1>Painel Pedagógico</h1>
-    <p>Acesso restrito — informe a senha de administrador</p>
-    <label for="senhaInput">Senha</label>
-    <input type="password" id="senhaInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/>
-    <button class="login-btn" id="loginBtn" onclick="login()">Entrar</button>
-    <div class="login-err" id="loginErr">Senha incorreta. Tente novamente.</div>
+    <p>Acesso restrito ao administrador</p>
+    <div class="form-group">
+      <label for="senhaInput">Senha</label>
+      <input type="password" id="senhaInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()"/>
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="login()">Entrar no painel</button>
+    <div class="login-err" id="loginErr"></div>
   </div>
 </div>
 
+<!-- ══ PAINEL ══ -->
 <div id="painelView">
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <div class="s-logo">
-        <div class="s-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-        <div><div class="s-logo-txt">Painel Pedagógico</div><div class="s-logo-sub">Administração</div></div>
-      </div>
+
+  <!-- topnav -->
+  <nav class="topnav">
+    <div class="nav-brand">
+      <div class="nav-logo"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+      <div><div class="nav-title">Painel Pedagógico</div><div class="nav-sub">Gestão de alunos</div></div>
     </div>
-    <div class="s-tabs">
-      <button class="s-tab active" onclick="switchTab('filtros')">🔍 Filtros</button>
-      <button class="s-tab" onclick="switchTab('turmas')">🏫 Turmas</button>
-    </div>
-    <div class="s-panel" id="panelFiltros">
-      <span class="f-label">Nome do aluno</span>
-      <input type="text" class="f-input" id="fNome" placeholder="Buscar por nome..." oninput="filtrar()"/>
-      <span class="f-label">ID da turma</span>
-      <input type="text" class="f-input" id="fTurma" placeholder="Ex: 2025-ENF-01" oninput="filtrar()"/>
-      <span class="f-label">Curso</span>
-      <select class="f-input" id="fCurso" onchange="filtrar()"><option value="">Todos os cursos</option></select>
-      <span class="f-label">Turno</span>
-      <select class="f-input" id="fTurno" onchange="filtrar()">
-        <option value="">Todos os turnos</option>
-        <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>EAD</option>
-      </select>
-      <button class="clear-btn" onclick="limparFiltros()">✕ Limpar filtros</button>
-    </div>
-    <div class="s-panel hidden" id="panelTurmas">
-      <div class="turma-form">
-        <div class="turma-form-title">➕ Nova turma</div>
-        <input type="text" class="tf-input" id="ntId" placeholder="ID (ex: 2025-ENF-01)" maxlength="30"/>
-        <input type="text" class="tf-input" id="ntCurso" placeholder="Curso (ex: Enfermagem)" maxlength="50"/>
-        <select class="tf-input" id="ntTurno">
-          <option value="">Selecione o turno</option>
-          <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>EAD</option>
-        </select>
-        <button class="criar-btn" id="btnCriar" onclick="criarTurma()">Criar turma</button>
-      </div>
-      <div id="turmasList"><div class="no-turmas">Carregando...</div></div>
-    </div>
-    <div class="s-footer">
+    <div class="nav-right">
+      <div class="nav-stat">Total: <b id="navTotal">—</b></div>
+      <div class="nav-stat">Cursos: <b id="navCursos">—</b></div>
+      <div class="nav-stat">Turmas: <b id="navTurmas">—</b></div>
       <button class="logout-btn" onclick="logout()">
         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        Sair do painel
+        Sair
       </button>
     </div>
-  </aside>
+  </nav>
 
-  <div class="main">
-    <div class="topbar">
-      <div><h2>Alunos cadastrados</h2><p id="topbarSub">Carregando...</p></div>
-      <div class="stats-row">
-        <div class="stat-pill">Total: <span id="statTotal">—</span></div>
-        <div class="stat-pill">Cursos: <span id="statCursos">—</span></div>
-        <div class="stat-pill">Turmas: <span id="statTurmas">—</span></div>
+  <!-- tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tabAlunos" onclick="switchTab('alunos')">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Alunos
+    </button>
+    <button class="tab-btn" id="tabTurmas" onclick="switchTab('turmas')">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Turmas
+    </button>
+  </div>
+
+  <!-- PAGE: ALUNOS -->
+  <div class="page active" id="pageAlunos">
+    <div class="stats-bar">
+      <div class="stat-card green"><div class="stat-label">Total de alunos</div><div class="stat-val" id="statTotal">—</div></div>
+      <div class="stat-card"><div class="stat-label">Cursos</div><div class="stat-val" id="statCursos">—</div></div>
+      <div class="stat-card"><div class="stat-label">Turmas</div><div class="stat-val" id="statTurmas">—</div></div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-bar-inner">
+        <div class="filter-group">
+          <label>Buscar por nome</label>
+          <input type="text" id="fNome" placeholder="Nome do aluno..." oninput="filtrar()"/>
+        </div>
+        <div class="filter-group">
+          <label>ID da turma</label>
+          <input type="text" id="fTurma" placeholder="Ex: 2025-ENF-01" oninput="filtrar()"/>
+        </div>
+        <div class="filter-group">
+          <label>Curso</label>
+          <select id="fCurso" onchange="filtrar()"><option value="">Todos</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Turno</label>
+          <select id="fTurno" onchange="filtrar()">
+            <option value="">Todos</option>
+            <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>EAD</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:.75rem;text-align:right">
+        <button class="clear-filter-btn" onclick="limparFiltros()">✕ Limpar filtros</button>
       </div>
     </div>
-    <div class="content" id="content">
-      <div style="text-align:center;padding:4rem 1rem"><div class="big-spin"></div><p style="color:var(--mu);font-size:14px">Carregando cadastros...</p></div>
+
+    <div id="alunosContent">
+      <div class="page-loading"><div class="big-spin"></div><p style="color:var(--mu)">Carregando alunos...</p></div>
     </div>
   </div>
-</div>
 
-<div class="lightbox" id="lightbox" onclick="fecharLB()">
+  <!-- PAGE: TURMAS -->
+  <div class="page" id="pageTurmas">
+    <div class="turmas-layout">
+
+      <div class="turma-form-card">
+        <h3>
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Nova turma
+        </h3>
+        <div class="tf-group">
+          <label>ID da turma</label>
+          <input type="text" id="ntId" placeholder="Ex: 2025-ENF-01" maxlength="50"/>
+        </div>
+        <div class="tf-group">
+          <label>Curso</label>
+          <input type="text" id="ntCurso" placeholder="Ex: Técnico Mecatrônica" maxlength="50"/>
+        </div>
+        <div class="tf-group">
+          <label>Turno</label>
+          <select id="ntTurno">
+            <option value="">Selecione o turno</option>
+            <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>EAD</option>
+          </select>
+        </div>
+        <button class="criar-btn" id="btnCriar" onclick="criarTurma()">
+          <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Criar turma
+        </button>
+      </div>
+
+      <div class="turmas-list-card">
+        <div class="turmas-list-header">
+          <h3>Turmas cadastradas</h3>
+          <span class="turma-count-badge" id="turmaCount">0</span>
+        </div>
+        <div id="turmasList"><div class="no-turmas">Carregando turmas...</div></div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /painelView -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
   <button class="lb-close" onclick="fecharLB()">✕</button>
   <img id="lbImg" src="" alt="Foto"/>
-  <div class="lb-info"><div class="lb-nome" id="lbNome"></div><div class="lb-meta" id="lbMeta"></div></div>
+  <div class="lb-card"><div class="lb-nome" id="lbNome"></div><div class="lb-meta" id="lbMeta"></div></div>
 </div>
 
+<!-- MODAL EXCLUIR ALUNO -->
 <div class="overlay" id="overlayAluno">
   <div class="modal">
-    <h3>Excluir cadastro?</h3><p id="modalAlunoMsg"></p>
+    <div class="modal-icon danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></div>
+    <h3>Excluir cadastro?</h3>
+    <p id="modalAlunoMsg"></p>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="fecharModalAluno()">Cancelar</button>
       <button class="btn-del" onclick="confirmarExclusaoAluno()">Excluir</button>
@@ -210,9 +354,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
+<!-- MODAL EXCLUIR TURMA -->
 <div class="overlay" id="overlayTurma">
   <div class="modal">
-    <h3>Remover turma?</h3><p id="modalTurmaMsg"></p>
+    <div class="modal-icon danger"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></div>
+    <h3>Remover turma?</h3>
+    <p id="modalTurmaMsg"></p>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="fecharModalTurma()">Cancelar</button>
       <button class="btn-del" onclick="confirmarExclusaoTurma()">Remover</button>
@@ -220,25 +367,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon"></span><span id="toastMsg"></span></div>
 
 <script>
-// ── CONFIG ──
 const BASE = 'https://script.google.com/macros/s/AKfycbxZim1Qb7_sZVRMhefpEbhV4ecbwVqtDertJVAxiwIohtns9Nrg884oRZffb8_0UEkDUg/exec';
-
 let senha = '';
 let todosAlunos = [];
 let todasTurmas = [];
 let pendAluno = null;
 let pendTurma = null;
 
-// ── CHAMADA VIA GET (resolve CORS) ──
-function api(params) {
-  // Encoding manual para garantir que pontos, traços e caracteres especiais sejam preservados
-  const qs = Object.entries(params)
-    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-    .join('&');
-  return fetch(`${BASE}?${qs}`, { method: 'GET' }).then(r => r.json());
+// ── API via POST (sem problemas de CORS ou encoding) ──
+function api(body) {
+  return fetch(BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  }).then(r => r.json());
 }
 
 // ── LOGIN ──
@@ -246,25 +391,26 @@ async function login() {
   const s = document.getElementById('senhaInput').value;
   if (!s) return;
   const btn = document.getElementById('loginBtn');
-  btn.textContent = 'Verificando...'; btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span> Verificando...';
+  btn.disabled = true;
   try {
     const r = await api({ acao: 'buscar', senha: s, query: '' });
     if (r.status === 'erro') {
-      document.getElementById('loginErr').textContent = r.msg === 'Senha incorreta.' ? 'Senha incorreta. Tente novamente.' : 'Erro: ' + r.msg;
+      document.getElementById('loginErr').textContent = r.msg;
       document.getElementById('loginErr').classList.add('show');
-      btn.textContent = 'Entrar'; btn.disabled = false;
+      btn.textContent = 'Entrar no painel'; btn.disabled = false;
     } else {
       senha = s;
       document.getElementById('loginView').style.display = 'none';
       document.getElementById('painelView').classList.add('show');
       todosAlunos = r.dados || [];
-      popularFiltros(); renderAlunos(todosAlunos);
+      atualizarStats(); popularFiltros(); renderAlunos(todosAlunos);
       carregarTurmas();
     }
   } catch(e) {
     document.getElementById('loginErr').textContent = 'Falha na conexão: ' + e.message;
     document.getElementById('loginErr').classList.add('show');
-    btn.textContent = 'Entrar'; btn.disabled = false;
+    btn.textContent = 'Entrar no painel'; btn.disabled = false;
   }
 }
 
@@ -274,35 +420,58 @@ function logout() {
   document.getElementById('painelView').classList.remove('show');
   document.getElementById('senhaInput').value = '';
   document.getElementById('loginErr').classList.remove('show');
-  document.getElementById('loginBtn').textContent = 'Entrar';
+  document.getElementById('loginBtn').textContent = 'Entrar no painel';
   document.getElementById('loginBtn').disabled = false;
 }
 
 // ── TABS ──
 function switchTab(tab) {
-  document.querySelectorAll('.s-tab').forEach((t, i) => t.classList.toggle('active', (i===0)===(tab==='filtros')));
-  document.getElementById('panelFiltros').classList.toggle('hidden', tab !== 'filtros');
-  document.getElementById('panelTurmas').classList.toggle('hidden', tab !== 'turmas');
+  document.getElementById('tabAlunos').classList.toggle('active', tab==='alunos');
+  document.getElementById('tabTurmas').classList.toggle('active', tab==='turmas');
+  document.getElementById('pageAlunos').classList.toggle('active', tab==='alunos');
+  document.getElementById('pageTurmas').classList.toggle('active', tab==='turmas');
+}
+
+// ── STATS ──
+function atualizarStats() {
+  const cursos = [...new Set(todosAlunos.map(a=>a.curso).filter(Boolean))];
+  const turmas = [...new Set(todosAlunos.map(a=>a.idTurma).filter(Boolean))];
+  document.getElementById('navTotal').textContent   = todosAlunos.length;
+  document.getElementById('navCursos').textContent  = cursos.length;
+  document.getElementById('navTurmas').textContent  = turmas.length;
+  document.getElementById('statTotal').textContent  = todosAlunos.length;
+  document.getElementById('statCursos').textContent = cursos.length;
+  document.getElementById('statTurmas').textContent = turmas.length;
 }
 
 // ── TURMAS ──
 async function carregarTurmas() {
-  const r = await api({ acao: 'listarTurmas' }).catch(() => ({ status: 'erro', turmas: [] }));
+  const r = await api({ acao: 'listarTurmas' }).catch(() => ({ status:'ok', turmas:[] }));
   todasTurmas = r.turmas || [];
   renderTurmas();
 }
 
 function renderTurmas() {
+  document.getElementById('turmaCount').textContent = todasTurmas.length;
   const el = document.getElementById('turmasList');
-  if (!todasTurmas.length) { el.innerHTML = '<div class="no-turmas">Nenhuma turma cadastrada ainda.</div>'; return; }
-  el.innerHTML = '<div class="turmas-list">' + todasTurmas.map(t => `
-    <div class="turma-item">
-      <div class="turma-item-info">
-        <div class="turma-item-id">${esc(t.idTurma)}</div>
-        <div class="turma-item-meta">${esc(t.curso)} • ${esc(t.turno)}</div>
+  if (!todasTurmas.length) {
+    el.innerHTML = '<div class="no-turmas">Nenhuma turma cadastrada ainda.<br>Use o formulário ao lado para criar.</div>';
+    return;
+  }
+  el.innerHTML = todasTurmas.map(t => `
+    <div class="turma-row">
+      <div class="turma-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="turma-info">
+        <div class="turma-id">${esc(t.idTurma)}</div>
+        <div class="turma-chips">
+          <span class="turma-chip tc-curso">${esc(t.curso)}</span>
+          <span class="turma-chip tc-turno">${esc(t.turno)}</span>
+        </div>
       </div>
-      <button class="turma-del" onclick='abrirModalTurma(${JSON.stringify(t)})' title="Remover">✕</button>
-    </div>`).join('') + '</div>';
+      <button class="turma-del-btn" onclick='abrirModalTurma(${JSON.stringify(t)})' title="Remover turma">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+      </button>
+    </div>`).join('');
 }
 
 async function criarTurma() {
@@ -311,7 +480,7 @@ async function criarTurma() {
   const turno   = document.getElementById('ntTurno').value;
   if (!idTurma || !curso || !turno) { toast('er', 'Preencha todos os campos da turma.'); return; }
   const btn = document.getElementById('btnCriar');
-  btn.disabled = true; btn.innerHTML = '<span class="spin-sm"></span> Criando...';
+  btn.innerHTML = '<span class="spin"></span> Criando...'; btn.disabled = true;
   try {
     const r = await api({ acao: 'criarTurma', senha, idTurma, curso, turno });
     if (r.status === 'ok') {
@@ -322,30 +491,35 @@ async function criarTurma() {
       await carregarTurmas();
     } else toast('er', r.msg);
   } catch { toast('er', 'Falha na conexão.'); }
-  btn.disabled = false; btn.textContent = 'Criar turma';
+  btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Criar turma';
+  btn.disabled = false;
 }
 
 function abrirModalTurma(t) {
   pendTurma = t;
   document.getElementById('modalTurmaMsg').textContent =
-    `A turma "${t.idTurma}" (${t.curso}) será removida do controle. Alunos já cadastrados permanecem na planilha.`;
+    `A turma "${t.idTurma}" (${t.curso} — ${t.turno}) será removida do controle. Alunos já cadastrados permanecem na planilha.`;
   document.getElementById('overlayTurma').classList.add('show');
 }
 function fecharModalTurma() { document.getElementById('overlayTurma').classList.remove('show'); pendTurma = null; }
 
 async function confirmarExclusaoTurma() {
-  if (!pendTurma) return; fecharModalTurma();
-  const r = await api({ acao: 'excluirTurma', senha, idTurma: pendTurma.idTurma }).catch(() => ({ status: 'erro', msg: 'Falha.' }));
-  if (r.status === 'ok') { toast('ok', r.msg); await carregarTurmas(); }
-  else toast('er', r.msg);
+  if (!pendTurma) return;
+  const t = pendTurma;
+  fecharModalTurma();
+  try {
+    const r = await api({ acao: 'excluirTurma', senha, idTurma: t.idTurma });
+    if (r.status === 'ok') { toast('ok', r.msg); await carregarTurmas(); }
+    else toast('er', r.msg);
+  } catch { toast('er', 'Falha na conexão.'); }
 }
 
 // ── FILTROS ──
 function popularFiltros() {
-  const cursos = [...new Set(todosAlunos.map(a => a.curso).filter(Boolean))].sort();
+  const cursos = [...new Set(todosAlunos.map(a=>a.curso).filter(Boolean))].sort();
   const sel = document.getElementById('fCurso');
-  sel.innerHTML = '<option value="">Todos os cursos</option>';
-  cursos.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+  sel.innerHTML = '<option value="">Todos</option>';
+  cursos.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o); });
 }
 
 function filtrar() {
@@ -354,60 +528,57 @@ function filtrar() {
   const curso = document.getElementById('fCurso').value;
   const turno = document.getElementById('fTurno').value;
   renderAlunos(todosAlunos.filter(a =>
-    (!nome  || a.nome?.toLowerCase().includes(nome)) &&
-    (!turma || a.idTurma?.toLowerCase().includes(turma)) &&
+    (!nome  || (a.nome||'').toLowerCase().includes(nome)) &&
+    (!turma || (a.idTurma||'').toLowerCase().includes(turma)) &&
     (!curso || a.curso === curso) &&
     (!turno || a.turno === turno)
   ));
 }
 
 function limparFiltros() {
-  ['fNome','fTurma'].forEach(id => document.getElementById(id).value = '');
-  ['fCurso','fTurno'].forEach(id => document.getElementById(id).selectedIndex = 0);
+  ['fNome','fTurma'].forEach(id => document.getElementById(id).value='');
+  ['fCurso','fTurno'].forEach(id => document.getElementById(id).selectedIndex=0);
   renderAlunos(todosAlunos);
 }
 
 // ── RENDER ALUNOS ──
 function renderAlunos(lista) {
-  const el = document.getElementById('content');
-  const cursos = [...new Set(lista.map(a => a.curso || 'Sem curso'))].sort();
-  const turmas = [...new Set(lista.map(a => a.idTurma).filter(Boolean))];
-  document.getElementById('statTotal').textContent  = lista.length;
-  document.getElementById('statCursos').textContent = cursos.length;
-  document.getElementById('statTurmas').textContent = turmas.length;
-  document.getElementById('topbarSub').textContent  =
-    lista.length === todosAlunos.length
-      ? `${lista.length} aluno${lista.length!==1?'s':''} cadastrado${lista.length!==1?'s':''}`
-      : `${lista.length} de ${todosAlunos.length} alunos (filtro ativo)`;
-
+  const el = document.getElementById('alunosContent');
   if (!lista.length) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>Nenhum aluno encontrado</h3><p>Tente ajustar os filtros.</p></div>`;
+    el.innerHTML = `<div class="empty-state"><div class="icon">🔍</div><h3>Nenhum aluno encontrado</h3><p>Tente ajustar os filtros de busca.</p></div>`;
     return;
   }
+  const cursos = [...new Set(lista.map(a=>a.curso||'Sem curso'))].sort();
   let html = '';
   cursos.forEach(curso => {
-    const grupo = lista.filter(a => (a.curso||'Sem curso') === curso);
-    html += `<div class="curso-section">
-      <div class="curso-header"><span class="curso-badge">${esc(curso)}</span><span class="curso-count">${grupo.length} aluno${grupo.length!==1?'s':''}</span></div>
+    const grupo = lista.filter(a=>(a.curso||'Sem curso')===curso);
+    html += `<div>
+      <div class="section-header">
+        <span class="section-badge">${esc(curso)}</span>
+        <span class="section-count">${grupo.length} aluno${grupo.length!==1?'s':''}</span>
+      </div>
       <div class="alunos-grid">`;
     grupo.forEach(a => {
       const temFoto = a.linkFoto?.startsWith('http');
-      const aJson = JSON.stringify(a).replace(/'/g, '&#39;');
+      const aJ = JSON.stringify(a).replace(/'/g,"&#39;");
       html += `<div class="aluno-card">
-        <div class="foto-wrap" onclick='abrirFoto(${aJson})'>
+        <div class="foto-wrap" onclick='abrirFoto(${aJ})'>
           ${temFoto
             ? `<img src="${esc(a.linkFoto)}" alt="${esc(a.nome)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
                <div class="foto-ph" style="display:none">👤</div>`
             : `<div class="foto-ph">👤</div>`}
-          <span class="turno-badge">${esc(a.turno||'—')}</span>
+          <span class="turno-chip">${esc(a.turno||'—')}</span>
+          <div class="foto-overlay"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
         </div>
-        <div class="aluno-info">
+        <div class="aluno-body">
           <div class="aluno-nome" title="${esc(a.nome)}">${esc(a.nome)}</div>
           <div class="aluno-curso">${esc(a.curso)}</div>
-          <div class="aluno-turma">🪪 ${esc(a.idTurma)}</div>
+          <div class="aluno-chips">
+            <span class="chip">🪪 ${esc(a.idTurma)}</span>
+          </div>
           <div class="aluno-data">📅 ${esc(a.data)}</div>
         </div>
-        <button class="del-btn" onclick='abrirModalAluno(${aJson})'>
+        <button class="del-aluno-btn" onclick='abrirModalAluno(${aJ})'>
           <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           Excluir cadastro
         </button>
@@ -438,30 +609,37 @@ function abrirModalAluno(a) {
 function fecharModalAluno() { document.getElementById('overlayAluno').classList.remove('show'); pendAluno = null; }
 
 async function confirmarExclusaoAluno() {
-  if (!pendAluno) return; fecharModalAluno();
-  const r = await api({ acao: 'excluir', senha, curso: pendAluno.curso, linhaIdx: pendAluno.linhaIdx }).catch(() => ({ status: 'erro', msg: 'Falha.' }));
-  if (r.status === 'ok') {
-    todosAlunos = todosAlunos.filter(a => !(a.curso === pendAluno.curso && a.linhaIdx === pendAluno.linhaIdx));
-    popularFiltros(); filtrar();
-    toast('ok', `Cadastro de ${pendAluno.nome} excluído.`);
-  } else toast('er', r.msg);
+  if (!pendAluno) return;
+  const a = pendAluno; fecharModalAluno();
+  try {
+    const r = await api({ acao: 'excluir', senha, curso: a.curso, linhaIdx: a.linhaIdx });
+    if (r.status === 'ok') {
+      todosAlunos = todosAlunos.filter(x => !(x.curso===a.curso && x.linhaIdx===a.linhaIdx));
+      atualizarStats(); popularFiltros(); filtrar();
+      toast('ok', `${a.nome} excluído com sucesso.`);
+    } else toast('er', r.msg);
+  } catch { toast('er', 'Falha na conexão.'); }
+}
+
+// ── TOAST ──
+let toastTimer;
+function toast(tipo, msg) {
+  const el = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = tipo==='ok' ? '✅' : '❌';
+  document.getElementById('toastMsg').textContent = msg;
+  el.className = 'toast show ' + tipo;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 4000);
 }
 
 // ── HELPERS ──
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-let toastTimer;
-function toast(tipo, msg) {
-  const el = document.getElementById('toast');
-  el.className = 'toast show ' + tipo;
-  el.textContent = (tipo==='ok'?'✅ ':'❌ ') + msg;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
-}
-
-document.getElementById('overlayAluno').addEventListener('click', e => { if(e.target===document.getElementById('overlayAluno')) fecharModalAluno(); });
-document.getElementById('overlayTurma').addEventListener('click', e => { if(e.target===document.getElementById('overlayTurma')) fecharModalTurma(); });
-document.getElementById('lightbox').addEventListener('click',     e => { if(e.target===document.getElementById('lightbox')) fecharLB(); });
+// Fechar modais clicando fora
+['overlayAluno','overlayTurma'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => { if(e.target===document.getElementById(id)) document.getElementById(id).classList.remove('show'); });
+});
+document.getElementById('lightbox').addEventListener('click', e => { if(e.target===document.getElementById('lightbox')) fecharLB(); });
 </script>
 </body>
 </html>
