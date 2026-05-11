@@ -324,7 +324,18 @@ body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--tx);min-heig
 const BASE = 'https://script.google.com/macros/s/AKfycbxZim1Qb7_sZVRMhefpEbhV4ecbwVqtDertJVAxiwIohtns9Nrg884oRZffb8_0UEkDUg/exec';
 let senha='', todosAlunos=[], todasTurmas=[], pendAluno=null, pendTurma=null;
 
-function api(body){ return fetch(BASE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json()); }
+// Formulário do aluno usa POST; admin usa GET (evita CORS do domínio senai.br)
+function api(body){
+  // Cadastrar sempre via POST (tem foto em base64 — muito grande para GET)
+  if(body.acao==='cadastrar'||body.acao==='listarTurmas'){
+    return fetch(BASE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}).then(r=>r.json());
+  }
+  // Demais ações admin via GET (sem bloqueio de CORS)
+  const params = Object.entries(body)
+    .map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v!==null&&v!==undefined?v:'')}`)
+    .join('&');
+  return fetch(`${BASE}?${params}`,{method:'GET'}).then(r=>r.json());
+}
 
 // LOGIN
 async function login(){
