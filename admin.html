@@ -234,7 +234,10 @@ let pendTurma = null;
 
 // ── CHAMADA VIA GET (resolve CORS) ──
 function api(params) {
-  const qs = new URLSearchParams(params).toString();
+  // Encoding manual para garantir que pontos, traços e caracteres especiais sejam preservados
+  const qs = Object.entries(params)
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join('&');
   return fetch(`${BASE}?${qs}`, { method: 'GET' }).then(r => r.json());
 }
 
